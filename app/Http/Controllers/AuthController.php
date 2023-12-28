@@ -15,7 +15,7 @@ class AuthController extends Controller
 
 
      //clase que permitira el registro del usuario
-     public function register(Request $request)
+     public function registro(Request $request)
 {
     $request->validate([
         'nombre' => 'required|string|max:10',
