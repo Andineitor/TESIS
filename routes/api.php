@@ -35,4 +35,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 // Cambia la ruta para manejar el restablecimiento de contraseña a una solicitud POST
-Route::post('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('password.reset');
+Route::any('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('password.reset');
