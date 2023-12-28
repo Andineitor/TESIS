@@ -37,10 +37,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 // Cambia la ruta para manejar el restablecimiento de contraseña a una solicitud POST
-Route::middleware('cors')->any('/reset-password/{token}', function ($token) {
-    $resetUrl = "https://cargod.netlify.app/reset-password/$token";
-    return Redirect::away($resetUrl);
+Route::middleware('cors')->get('/reset-password/{token}', function ($token) {
+    // Aquí, puedes agregar la lógica para recuperar el token y redirigir al frontend
+    return Redirect::away("https://cargod.netlify.app/reset-password/$token");
 })->middleware('guest')->name('password.reset');
+
 
 
 
