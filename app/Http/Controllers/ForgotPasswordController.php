@@ -2,32 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
 
 class ForgotPasswordController extends Controller
 {
     use SendsPasswordResetEmails;
 
-    /**
-     * Display the form to request a password reset link.
-     *
-     * @return \Illuminate\View\View
-     */
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
     public function showLinkRequestForm()
     {
         return view('auth.passwords.email');
     }
 
-    /**
-     * Send a reset link to the given user.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -37,16 +30,15 @@ class ForgotPasswordController extends Controller
         );
 
         return $status === Password::RESET_LINK_SENT
-            ? response()->json(['status' => __('Hemos enviado por correo electrónico el enlace para restablecer su contraseña.')])
-            : response()->json(['email' => [__($status)]], 400);
+            ? response()->json(['status' => __('Le hemos enviado por correo electrónico el enlace para restablecer su contraseña.')])
+            : response()->json(['email' => __('La dirección de correo electrónico proporcionada no se encontró en nuestros registros.')], 400);
     }
 
-    /**
-     * Reset the given user's password.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function showResetForm($token)
+    {
+        return view('auth.passwords.reset')->with(['token' => $token, 'email' => request('email')]);
+    }
+
     public function reset(Request $request)
     {
         $request->validate([
@@ -55,28 +47,20 @@ class ForgotPasswordController extends Controller
             'password' => 'required|confirmed|min:8',
         ]);
 
-        // Validar si el token es válido
-        $response = $this->broker()->reset(
+        $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                // Realizar el restablecimiento de la contraseña
                 $user->forceFill([
-                    'password' => Hash::make($password),
+                    'password' => bcrypt($password),
+                    'remember_token' => Str::random(60),
                 ])->save();
-
-                // Evento para indicar que la contraseña ha sido restablecida
-                event(new PasswordReset($user));
             }
         );
 
-        // Verificar el estado de la operación y responder en consecuencia
-        return $response == Password::PASSWORD_RESET
-            ? response()->json(['message' => __($response)])
-            : response()->json(['email' => [__($response)]], 400);
-    }
-
-    protected function broker()
-    {
-        return Password::broker();
+        if ($status == Password::PASSWORD_RESET) {
+            return response()->json(['status' => __($status)]);
+        } else {
+            return response()->json(['email' => [__($status)]], 400);
+        }
     }
 }
