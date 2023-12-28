@@ -53,6 +53,7 @@ class AuthController extends Controller
     }
 }
 
+
  
  
  
@@ -79,7 +80,7 @@ class AuthController extends Controller
                  "res" => true,
                  "message" => "Bienvenido al sistema, " . $user->nombre,
                  "token" => $token,
-                 "role_id" => $role,
+                 "role" => $role,
              ], 200);
          } else {
              return response()->json([
