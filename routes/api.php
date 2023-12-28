@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 
+// Cambia la ruta para enviar el correo electrónico de restablecimiento a una solicitud POST
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('password.reset');
+// Cambia la ruta para manejar el restablecimiento de contraseña a una solicitud POST
+Route::post('/reset-password/{token}', [ForgotPasswordController::class, 'reset'])->name('password.reset');
