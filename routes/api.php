@@ -39,7 +39,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 // Cambia la ruta para manejar el restablecimiento de contraseña a una solicitud POST
 // Agrega esta línea en tu archivo de rutas o en el middleware global
 Route::middleware('cors')->get('/reset-password/{token}', function ($token) {
-    $resetUrl = "https://cargod.netlify.app/reset-password/$token";
+    $resetUrl = "https://cargod.netlify.app/reset-password/{$token}";
     return Redirect::away($resetUrl);
 })->name('password.reset');
 
