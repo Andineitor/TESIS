@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
 
 class ForgotPasswordController extends Controller
 {
@@ -53,17 +55,28 @@ class ForgotPasswordController extends Controller
             'password' => 'required|confirmed|min:8',
         ]);
 
-        $status = Password::reset(
+        // Validar si el token es válido
+        $response = $this->broker()->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
+                // Realizar el restablecimiento de la contraseña
                 $user->forceFill([
-                    'password' => bcrypt($password),
+                    'password' => Hash::make($password),
                 ])->save();
+
+                // Evento para indicar que la contraseña ha sido restablecida
+                event(new PasswordReset($user));
             }
         );
 
-        return $status == Password::PASSWORD_RESET
-            ? response()->json(['status' => __($status)])
-            : response()->json(['email' => [__($status)]], 400);
+        // Verificar el estado de la operación y responder en consecuencia
+        return $response == Password::PASSWORD_RESET
+            ? response()->json(['message' => __($response)])
+            : response()->json(['email' => [__($response)]], 400);
+    }
+
+    protected function broker()
+    {
+        return Password::broker();
     }
 }
