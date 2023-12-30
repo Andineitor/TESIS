@@ -41,8 +41,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 // Ruta para procesar la solicitud de restablecimiento
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
+
 // Ruta para mostrar el formulario de restablecimiento con el token
-// Ejemplo de cómo podría ser en tu archivo de rutas (web.php o api.php)
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 // Ruta para procesar el restablecimiento de la contraseña
-Route::get('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
