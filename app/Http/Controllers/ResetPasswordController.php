@@ -12,13 +12,12 @@ class ResetPasswordController extends Controller
 {
     use ResetsPasswords;
 
-    protected $redirectTo = '/home'; // Puedes cambiar esta ruta según tus necesidades
 
     public function showResetForm($token)
     {
         $frontendUrl = "https://cargod.netlify.app/reset-password/{$token}";
-    
-        return response()->json(['redirect_url' => $frontendUrl]);
+        
+        return redirect($frontendUrl);
     }
     
 
