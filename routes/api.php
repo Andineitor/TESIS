@@ -44,4 +44,5 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 
 
 // Ruta para procesar el restablecimiento de la contraseña
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+Route::get('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+

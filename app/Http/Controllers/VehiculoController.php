@@ -8,10 +8,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class VehiculoController extends Controller
 {
-    public function create()
-    {
-        return view('vehiculos.create');
-    }
+  
 
     public function vehiculo(Request $request)
 {

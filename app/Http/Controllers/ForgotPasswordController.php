@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
@@ -10,9 +11,21 @@ class ForgotPasswordController extends Controller
 {
     use SendsPasswordResetEmails;
 
-    public function showLinkRequestForm()
+    public function showResetForm(Request $request, $token)
     {
-        return view('auth.passwords.email');
+        // Validar el token y obtener el usuario asociado
+        $user = User::where('email', $request->email)->first();
+
+        // Verificar si el usuario y el token son válidos
+        if (!$user || !Password::tokenExists($user, $token)) {
+            return response()->json(['error' => 'Token inválido o usuario no encontrado'], 400);
+        }
+
+        // Obtener la URL del front-end y redirigir con el token
+        $frontendUrl = 'https://cargod.netlify.app/reset-password';
+        $resetUrl = $frontendUrl . '/' . $token;
+
+        return redirect($resetUrl);
     }
 
     public function sendResetLinkEmail(Request $request)
@@ -20,7 +33,7 @@ class ForgotPasswordController extends Controller
         $request->validate(['email' => 'required|email']);
 
         $status = Password::sendResetLink(
-            $request->only('email') 
+            $request->only('email')
         );
 
         return $status === Password::RESET_LINK_SENT
