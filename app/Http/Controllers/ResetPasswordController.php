@@ -14,12 +14,13 @@ class ResetPasswordController extends Controller
 
     protected $redirectTo = '/home'; // Puedes cambiar esta ruta según tus necesidades
 
-    public function showResetForm($token)
-    {
-        // Cambia la URL a la ruta completa de tu frontend
-        $frontendUrl = 'https://cargod.netlify.app/reset-password';
-        return redirect($frontendUrl . $token); // Redirige directamente al frontend con el token
-    }
+    // Elimina esta función, ya que no necesitas redirigir desde el backend
+    // public function showResetForm($token)
+    // {
+    //     // Cambia la URL a la ruta completa de tu frontend
+    //     $frontendUrl = 'https://cargod.netlify.app/reset-password';
+    //     return redirect($frontendUrl . $token); // Redirige directamente al frontend con el token
+    // }
 
     protected function reset(Request $request)
     {
@@ -38,9 +39,13 @@ class ResetPasswordController extends Controller
                 ])->save();
             }
         );
-    
+
+        // Modificación: devolver la URL de redirección en lugar de redirigir desde el backend
+        $frontendUrl = 'https://cargod.netlify.app/reset-password';
+        $redirectUrl = $frontendUrl . '/' . $request->token;
+
         if ($status == Password::PASSWORD_RESET) {
-            return response()->json(['status' => __('Cambio de clave exitoso')]);
+            return response()->json(['redirect_url' => $redirectUrl, 'status' => __('Cambio de clave exitoso')]);
         } else {
             // Agregar un comentario en caso de error
             $user = User::where('email', $request->email)->first();

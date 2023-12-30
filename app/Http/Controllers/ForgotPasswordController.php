@@ -20,7 +20,7 @@ class ForgotPasswordController extends Controller
         $request->validate(['email' => 'required|email']);
 
         $status = Password::sendResetLink(
-            $request->only('email')
+            $request->only('email') 
         );
 
         return $status === Password::RESET_LINK_SENT
