@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\VehiculoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // Otras rutas protegidas por autenticación
 
+    Route::post('/vehiculos', [VehiculoController::class, 'vehiculo']);
+
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -38,6 +42,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 // Ruta para mostrar el formulario de restablecimiento con el token
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm']);
 // Ruta para procesar el restablecimiento de la contraseña
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
