@@ -43,6 +43,6 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 
 
 // Ruta para mostrar el formulario de restablecimiento con el token
-Route::post('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 // Ruta para procesar el restablecimiento de la contraseña
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
