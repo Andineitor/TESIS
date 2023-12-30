@@ -45,4 +45,4 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 // Ejemplo de cómo podría ser en tu archivo de rutas (web.php o api.php)
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 // Ruta para procesar el restablecimiento de la contraseña
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+Route::get('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
