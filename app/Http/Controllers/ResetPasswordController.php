@@ -15,7 +15,7 @@ class ResetPasswordController extends Controller
 
     public function showResetForm($token)
     {
-        $frontendUrl = "https://cargod.netlify.app/reset-password/{$token}";
+        $frontendUrl = "https://cargod.netlify.app/reset-password/$token";
         
         return redirect($frontendUrl);
     }
