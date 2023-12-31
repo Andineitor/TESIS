@@ -28,8 +28,8 @@ class Vehiculo extends Model
 
     // Ejemplo de relación con Solicitud
     public function solicitud()
-    {
-        return $this->belongsTo(Solicitud::class);
-    }
+{
+    return $this->belongsTo(Solicitud::class, 'solicitud_id');
+}
 }
 

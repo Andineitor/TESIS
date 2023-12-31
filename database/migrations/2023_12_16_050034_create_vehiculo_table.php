@@ -21,7 +21,7 @@
                 $table->decimal('costo_alquiler',10,2);
                 $table->string('contacto');
                 $table->string('descripcion');
-                // $table->foreignId('solicitud_id')->default(1);
+                $table->foreignId('solicitud_id')->default(1)->constrained('solicitudes'); // Relaciona con la tabla roles
                 $table->timestamps();
             });
         }

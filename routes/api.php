@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\SolicituController;
 use App\Http\Controllers\VehiculoController;
 
 /*
@@ -29,9 +30,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // Otras rutas protegidas por autenticación
-
+    
     Route::post('/vehiculos', [VehiculoController::class, 'vehiculo']);
 
+    
+    Route::put('/estado/{id}', [SolicituController::class, 'estado']);
+;
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
