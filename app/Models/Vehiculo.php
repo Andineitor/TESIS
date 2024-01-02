@@ -22,6 +22,7 @@ class Vehiculo extends Model
         'contacto',
         'descripcion',
         'solicitud_id',
+        'contrato_id',
     ];
 
     // Puedes definir relaciones con otros modelos aquí si es necesario
@@ -30,6 +31,11 @@ class Vehiculo extends Model
     public function solicitud()
 {
     return $this->belongsTo(Solicitud::class, 'solicitud_id');
+}
+
+public function contrato()
+{
+    return $this->belongsTo(Contrato::class, 'solicitud_id');
 }
 }
 

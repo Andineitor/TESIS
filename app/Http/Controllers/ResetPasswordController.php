@@ -1,16 +1,25 @@
 <?php
 
-// app/Http/Controllers/ResetPasswordController.php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
     use ResetsPasswords;
+
+    protected $redirectTo = '/home'; // Puedes cambiar esta ruta según tus necesidades
+
+    public function showResetForm($token)
+    {
+        // Cambia la URL a la ruta completa de tu frontend
+    $frontendUrl = 'https://cargod.netlify.app/reset-password/{$token}';
+        return redirect($frontendUrl ); // Redirige directamente al frontend con el token
+    }
 
     protected function reset(Request $request)
     {
@@ -19,21 +28,27 @@ class ResetPasswordController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
         ]);
-
-        $response = $this->broker()->reset(
+    
+        $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->forceFill([
                     'password' => bcrypt($password),
+                    'remember_token' => Str::random(60),
                 ])->save();
             }
         );
-
-        if ($response == Password::PASSWORD_RESET) {
+    
+        if ($status == Password::PASSWORD_RESET) {
             return response()->json(['status' => __('Cambio de clave exitoso')]);
         } else {
-            return response()->json(['email' => [__($response)]], 400);
+            // Agregar un comentario en caso de error
+            $user = User::where('email', $request->email)->first();
+            $user->comments()->create([
+                'comment' => 'Error al cambiar la contraseña: ' . $status,
+            ]);
+    
+            return response()->json(['email' => [__($status)]], 400);
         }
     }
 }
-
