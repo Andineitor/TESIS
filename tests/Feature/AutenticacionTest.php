@@ -30,7 +30,6 @@ class AutenticacionTest extends TestCase
             'role_id' => 1,
             'password' => 'password123',
         ]);
-
         // Verifica que la respuesta tenga el código 201 (creado)
         $response->assertStatus(201);
 
@@ -44,8 +43,6 @@ class AutenticacionTest extends TestCase
         // Verifica que la contraseña del usuario en la base de datos sea la correcta
         $user = User::where('email', $response['user']['email'])->first();
         $this->assertTrue(Hash::check('password123', $user->password));
-
-        // Puedes agregar más aserciones según tus necesidades
     }
 
     public function testLogin()
@@ -87,54 +84,35 @@ class AutenticacionTest extends TestCase
     public function testLogout()
     {
         // Crear un usuario para las pruebas
-        $user = User::create([
-            'nombre' => $this->faker->firstName,
-            'apellido' => $this->faker->lastName,
-            'cedula' => '987654321',
-            'direccion' => 'andiloor2809@gmail.com',
-            'celular' => '123456789',
-            'email' => 'andiloor2809@gmail.com',
-            'role_id' => 1,
-            'password' => 'password123',
-        ]);
-    
+        $user = User::factory()->create();
+
         // Autenticar al usuario usando Sanctum
         Sanctum::actingAs($user);
-    
+
         // Simular una solicitud POST al endpoint de logout
         $response = $this->json('post', 'api/logout');
-    
+
         // Verificar que la respuesta tenga el código 200 (OK)
         $response->assertStatus(200);
-    
+
         // Verificar que el token del usuario ha sido revocado
         $this->assertDatabaseMissing('personal_access_tokens', [
             'tokenable_id' => $user->id,
             'tokenable_type' => get_class($user),
         ]);
-    
-        // Puedes agregar más aserciones según tus necesidades
+
     }
 
-    
+
     // Test para la función update
     public function testUpdate()
     {
-        // Crear un usuario para las pruebas
-        $user = User::create([
-            'nombre' => $this->faker->firstName,
-            'apellido' => $this->faker->lastName,
-            'cedula' => '987654321',
-            'direccion' => 'andiloor2809@gmail.com',
-            'celular' => '123456789',
-            'email' => 'andiloor2809@gmail.com',
-            'role_id' => 1,
-            'password' => 'password123',
-        ]);
+         // Crear un usuario para las pruebas
+         $user = User::factory()->create();
 
         // Autenticar al usuario usando Sanctum
         Sanctum::actingAs($user);
-
+        
         // Simular una solicitud PUT al endpoint de update
         $response = $this->json('put', 'api/update/' . $user->id, [
             'nombre' => 'juan',

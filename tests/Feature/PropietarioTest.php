@@ -16,9 +16,10 @@ class PropietarioTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Prueba para verificar que el registro de un vehículo sin proporcionar una imagen sea exitoso
     public function testRegistroExitoso()
     {
-        // Create a user
+        // Crear un usuario
         $user = User::create([
             'nombre' => 'roberto',
             'apellido' => 'juan',
@@ -29,67 +30,61 @@ class PropietarioTest extends TestCase
             'role_id' => 1,
             'password' => 'password123',
         ]);
-    
-        // Authenticate the user using Sanctum
+
+        // Autenticar al usuario utilizando Sanctum
         Sanctum::actingAs($user);
-    
-        // Realize the request to register a vehicle (without providing an image)
+
+        // Realizar la solicitud para registrar un vehículo (sin proporcionar una imagen)
         $response = $this->json('post', 'api/vehiculos', [
             'tipo_vehiculo' => 'Automóvil',
             'marca' => 'Toyota',
             'placas' => 'ABC123',
             'numero_pasajero' => 5,
-            'costo_alquiler' => 100.00, // Provide a decimal value with two decimal places
-            'contacto' => 'Your Contact',
-            'descripcion' => 'Your Description',
+            'costo_alquiler' => 100.00, 
+            'contacto' => '12345678',
+            'descripcion' => 'Hola Mundo',
         ]);
-        
-    
-        // Assert the response status and content
+
+        // Verificar el estado de la respuesta
         $response->assertStatus(200)
             ->assertJson(['success' => true]);
-    
-        // Assert that the vehicle is registered in the database
+
+        // Asegurar que el vehículo está registrado en la base de datos
         $this->assertDatabaseHas('vehiculos', [
             'placas' => 'ABC123',
-            'image_url' => null, // Check that image_url is set to null
+            'image_url' => null, // Verificar que image_url esté configurado como nulo
         ]);
     }
-    
 
-
-    
-
+    // Prueba para verificar que el índice de vehículos aceptados devuelve una respuesta exitosa y la cantidad correcta de vehículos
     public function testIndex()
-{
-    // Create a user
-    $user = User::create([
-        'nombre' => 'roberto',
-        'apellido' => 'juan',
-        'cedula' => '987654321',
-        'direccion' => 'andiloor2809@gmail.com',
-        'celular' => '123456789',
-        'email' => 'andiloor2809@gmail.com',
-        'role_id' => 1,
-        'password' => 'password123',
-    ]);
+    {
+        // Crear un usuario
+        $user = User::create([
+            'nombre' => 'roberto',
+            'apellido' => 'juan',
+            'cedula' => '987654321',
+            'direccion' => 'andiloor2809@gmail.com',
+            'celular' => '123456789',
+            'email' => 'andiloor2809@gmail.com',
+            'role_id' => 1,
+            'password' => 'password123',
+        ]);
 
-    // Authenticate the user using Sanctum
-    Sanctum::actingAs($user);
+        // Simular la autenticación 
+        Sanctum::actingAs($user);
 
-    // Create vehicles with no pending request
-    Vehiculo::factory()->count(3)->create();
+        // Crear vehículos con la librería factory
+        Vehiculo::factory()->count(3)->create();
 
-    // Create a vehicle with a pending request
+        // Hacer la solicitud a la ruta
+        $response = $this->json('get', 'api/aceptados');
 
-    // Make a request to the index method
-    $response = $this->json('get', 'api/aceptados');
+        // Verificar que la prueba fue exitosa
+        $response->assertStatus(200)
+            ->assertJson(['success' => true]);
 
-    // Assert the response status and content
-    $response->assertStatus(200)
-    ->assertJson(['success' => true]);
-
-// Assert that there are no vehicles with pending requests
-$response->assertJsonCount(0, 'vehiculos');
-}
+        // Asegurar que no hay vehículos con solicitudes pendientes
+        $response->assertJsonCount(0, 'vehiculos');
+    }
 }

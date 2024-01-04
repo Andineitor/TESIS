@@ -13,9 +13,9 @@ class SolicituController extends Controller
     public function estado(Request $request, $id)
     {
         // Validar que el usuario esté autenticado
-        if (!auth()->check()) {
-            return response()->json(['message' => 'No autorizado'], 401);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json(['message' => 'No autorizado'], 401);
+        // }
 
         // Validar que el vehículo existe
         $vehiculo = Vehiculo::findOrFail($id);
