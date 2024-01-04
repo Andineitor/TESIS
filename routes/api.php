@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     Route::get('/solicitudes/pendientes-aprobadas', [SolicituController::class, 'indexPendientes']);
+    
 
 
 
