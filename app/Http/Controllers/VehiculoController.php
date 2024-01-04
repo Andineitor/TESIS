@@ -85,7 +85,7 @@ class VehiculoController extends Controller
         try {
             // Obtener todos los vehículos que no tienen solicitud pendiente
             $vehiculos = Vehiculo::whereDoesntHave('solicitud', function ($query) {
-                $query->where('estado', 'pendiente');
+                 $query->whereIn('estado', ['pendiente', 'aceptado']);
             })->get();
 
             // Puedes devolver la colección de vehículos en la respuesta

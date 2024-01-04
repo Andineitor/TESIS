@@ -44,6 +44,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //eso se supone que solo lo hace el admin
     Route::get('/aceptados', [VehiculoController::class, 'index']);
 
+    Route::get('/pendientes', [SolicituController::class, 'indexPendientes']);
+    Route::get('/contratados', [ContratoController::class, 'indexContrato']);
+
+
     //aqui se supone el admin cambia el estado de un auto 
     //su estaado_id default es pendiente, este puede tene dos mas estado
     // [rechazado,aceptado]
@@ -58,7 +62,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     Route::get('/solicitudes/pendientes-aprobadas', [SolicituController::class, 'indexPendientes']);
-    
+
 
 
 

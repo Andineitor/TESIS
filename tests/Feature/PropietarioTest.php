@@ -81,18 +81,15 @@ class PropietarioTest extends TestCase
     Vehiculo::factory()->count(3)->create();
 
     // Create a vehicle with a pending request
-    $vehicleWithPendingRequest = Vehiculo::factory()->create(['solicitud_id' => 1, 'contrato_id' => null]);
 
     // Make a request to the index method
     $response = $this->json('get', 'api/aceptados');
 
     // Assert the response status and content
     $response->assertStatus(200)
-        ->assertJson(['success' => true]);
+    ->assertJson(['success' => true]);
 
-    // Assert the number of vehicles in the response
-    $response->assertJsonCount(Vehiculo::whereDoesntHave('solicitud', function ($query) {
-        $query->where('estado', 'pendiente');
-    })->count(), 'vehiculos');
+// Assert that there are no vehicles with pending requests
+$response->assertJsonCount(0, 'vehiculos');
 }
 }

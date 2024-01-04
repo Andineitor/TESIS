@@ -38,8 +38,8 @@ class SolicituController extends Controller
 
     public function indexPendientes()
     {
-        $solicitudes = Solicitud::whereIn('estado', ['pendiente', 'aprobada'])
-        ->with('vehiculos') // Eager load para evitar N+1 que ries
+        $solicitudes = Solicitud::whereIn('estado', ['pendiente', 'aceptado'])
+        ->with('vehiculos') // Eager load para evitar N+1 queries
         ->get();
 
         return response()->json(['solicitudes' => $solicitudes], 200);

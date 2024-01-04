@@ -15,6 +15,6 @@ class Solicitud extends Model
     // Relación con vehículos
     public function vehiculos()
     {
-        return $this->hasMany(Vehiculo::class);
+        return $this->hasone(Vehiculo::class);
     }
 }

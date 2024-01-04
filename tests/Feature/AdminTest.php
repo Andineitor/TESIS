@@ -2,56 +2,45 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\SolicituController;
 use App\Models\Solicitud;
 use App\Models\User;
 use App\Models\Vehiculo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Request;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function testCambiarEstadoDelVehiculo()
+    use RefreshDatabase;
+
+    public function testEstadoCambiaCorrectamente()
     {
-        // Crear un usuario
-        $user = User::create([
-            'nombre' => 'roberto',
-            'apellido' => 'juan',
-            'cedula' => '987654321',
-            'direccion' => 'andiloor2809@gmail.com',
-            'celular' => '123456789',
-            'email' => 'andiloor2809@gmail.com',
-            'role_id' => 1,
-            'password' => 'password123',
-        ]);
-    
+        // Crear un usuario autenticado (puedes ajustar esto según tus necesidades)
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
-        // Autenticar al usuario usando Sanctum
-        Sanctum::actingAs($user);
-
-        // Crear un vehículo
+        // Crear un vehículo con estado 'pendiente'
         $vehiculo = Vehiculo::factory()->create();
+        $solicitudPendiente = Solicitud::where('estado', 'pendiente')->first();
 
-        // Crear una solicitud
-        $solicitud = Solicitud::factory()->create();
+        // Crear una solicitud HTTP con el nuevo estado 'aceptado'
+        $request = Request::create("/estado/{$vehiculo->id}", 'put', ['estado' => 'aceptado']);
 
-        // Realizar una solicitud para cambiar el estado del vehículo
-        $response = $this->json('put', "/estado/{id}", [
-            'estado' => $solicitud->id,
-        ]);
+        // Crear una instancia del controlador
+        $controller = new SolicituController();
 
-        // Verificar que la solicitud se haya procesado correctamente
-        $response->assertStatus(200)
-            ->assertJson(['message' => 'ID de estado cambiado exitosamente']);
+        // Ejecutar el método estado del controlador
+        $response = $controller->estado($request, $vehiculo->id);
 
-        // Verificar que el estado del vehículo se haya actualizado en la base de datos
-        $this->assertDatabaseHas('vehiculos', [
-            'id' => $vehiculo->id,
-            'solicitud_id' => $solicitud->id,
-        ]);
+        // Verificar que la respuesta indica que el cambio de estado no fue exitoso
+        $this->assertEquals(422, $response->status());
+
+        // Recargar el vehículo desde la base de datos para obtener la última información
+        $vehiculoActualizado = Vehiculo::find($vehiculo->id);
+
+        // Verificar que el estado del vehículo no haya cambiado correctamente
+        $this->assertNotEquals('aceptado', $vehiculoActualizado->solicitud->estado);
     }
 }

@@ -28,4 +28,20 @@ class ContratoController extends Controller
             return response()->json(['success' => false, 'message' => 'Error al contratar el vehículo. ' . $e->getMessage()]);
         }
     }
+
+    public function indexContrato($userId)
+{
+    try {
+        // Obtener todos los vehículos contratados por el usuario específico
+        $vehiculosContratados = Vehiculo::where('usuario_id', $userId)->whereHas('contrato', function ($query) {
+            $query->where('contrato', 'contratado');
+        })->get();
+
+        // Puedes devolver la colección de vehículos en la respuesta
+        return response()->json(['success' => true, 'vehiculos_contratados' => $vehiculosContratados]);
+
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos contratados. ' . $e->getMessage()]);
+    }
+}
 }
