@@ -20,9 +20,10 @@ class AuthController extends Controller
     $request->validate([
         'nombre' => 'required|string|max:10',
         'apellido' => 'required|string|max:10',
+        'cedula'=>'required|string|max:10',
         'direccion' => 'required|string|nullable',
         'celular' => 'required|max:10',
-        'email' => 'required|email|unique:users,email|max:25',
+        'email' => 'required|email|unique:users,email|max:30',
         'role_id' => 'required|exists:roles,id',
         'password' => 'required|min:6|string',
     ]);
@@ -122,8 +123,8 @@ public function update(Request $request, $id)
 {
     //
     $input = $request->all();
-    $pacientes = User::findOrFail($id);
-    $pacientes->update($input);
+    $user = User::findOrFail($id);
+    $user->update($input);
     return response()->json(['res'=> true,'message'=> 'Modificado correctamente'],200);
 
 }

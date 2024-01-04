@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class SolicituController extends Controller
 {
+    
+    
     public function estado(Request $request, $id)
     {
         // Validar que el usuario esté autenticado
@@ -32,5 +34,14 @@ class SolicituController extends Controller
         $vehiculo->save();
 
         return response()->json(['message' => 'ID de estado cambiado exitosamente']);
+    }
+
+    public function indexPendientes()
+    {
+        $solicitudes = Solicitud::whereIn('estado', ['pendiente', 'aprobada'])
+        ->with('vehiculos') // Eager load para evitar N+1 queries
+        ->get();
+
+        return response()->json(['solicitudes' => $solicitudes], 200);
     }
 }

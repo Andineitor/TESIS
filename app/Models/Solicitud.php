@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Solicitud extends Model
 {
+    use HasFactory;
     protected $table = 'solicitudes'; // Especifica el nombre correcto de la tabla
 
     protected $fillable = ['estado']; // Lista de atributos que pueden ser asignados masivamente

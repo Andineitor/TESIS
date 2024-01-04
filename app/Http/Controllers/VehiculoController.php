@@ -19,16 +19,29 @@ class VehiculoController extends Controller
                     'marca' => 'required|string',
                     'placas' => 'required|unique:vehiculos,placas',
                     'numero_pasajero' => 'required|integer',
-                    'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    // 'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ],
                 [
                     'placas.unique' => 'Ya existe un vehículo con estas placas ',
                 ]
             );
+      // Check if an image has been provided
+      if ($request->hasFile('image_url')) {
+        // Subir imagen a Cloudinary
+        $imagePath = $request->file('image_url')->getRealPath();
+        $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'vehiculos']);
 
-            // Subir imagen a Cloudinary
-            $imagePath = $request->file('image_url')->getRealPath();
-            $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'vehiculos']);
+        // Check if Cloudinary upload was successful
+        if (!$cloudinaryUpload || !isset($cloudinaryUpload['secure_url'])) {
+            return response()->json(['success' => false, 'message' => 'Error al subir la imagen a Cloudinary']);
+        }
+
+        // Set image URL to the secure URL from Cloudinary
+        $imageUrl = $cloudinaryUpload['secure_url'];
+    } else {
+        // If no image is provided, set image URL to null
+        $imageUrl = null;
+    }
 
             // Obtener el ID del estado "pendiente"
             $estadoPendienteId = Solicitud::where('estado', 'pendiente')->value('id');
@@ -41,7 +54,7 @@ class VehiculoController extends Controller
                 'marca' => $request->input('marca'),
                 'placas' => $request->input('placas'),
                 'numero_pasajero' => $request->input('numero_pasajero'),
-                'image_url' => $cloudinaryUpload->getSecurePath(),
+                'image_url' => $imageUrl,
                 'costo_alquiler' => $request->input('costo_alquiler'),
                 'contacto' => $request->input('contacto'),
                 'descripcion' => $request->input('descripcion'),

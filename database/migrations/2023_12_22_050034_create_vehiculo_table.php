@@ -17,7 +17,7 @@
                 $table->string('marca');
                 $table->string('placas')->unique();
                 $table->integer('numero_pasajero');
-                $table->string('image_url');
+                $table->string('image_url')->nullable();
                 $table->decimal('costo_alquiler',10,2);
                 $table->string('contacto');
                 $table->string('descripcion');

@@ -33,6 +33,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Otras rutas protegidas por autenticación
 
+    Route::put('/update/{id}', [AuthController::class, 'update']);
+
+
     //registrta vehiculo
     Route::post('/vehiculos', [VehiculoController::class, 'vehiculo']);
     
@@ -52,6 +55,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //por lo cual mediante el id del contrato se puede obtener el campo contrato el
     //cual tiene por defecto una cade que dice "contratado"
     Route::post('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato']);
+
+
+    Route::get('/solicitudes/pendientes-aprobadas', [SolicituController::class, 'indexPendientes']);
+
+
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
