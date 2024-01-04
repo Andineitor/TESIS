@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //muestra los vehiculos solo cuando su estado_id es = aceptada 
     //eso se supone que solo lo hace el admin
-    Route::get('/aceptados', [VehiculoController::class, 'index']);
+    Route::get('/aceptados', [VehiculoController::class, 'indexCliente']);
 
     Route::get('/pendientes', [SolicituController::class, 'indexPendientes']);
     Route::get('/contratados', [ContratoController::class, 'indexContrato']);
@@ -61,7 +61,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato']);
 
 
-    Route::get('/solicitudes/pendientes-aprobadas', [SolicituController::class, 'indexPendientes']);
+    Route::get('/solicitudes/pendientes', [SolicituController::class, 'indexPendientes']);
+    Route::get('/solicitudes/aceptados', [SolicituController::class, 'indexAceptados']);
+
 
 
 

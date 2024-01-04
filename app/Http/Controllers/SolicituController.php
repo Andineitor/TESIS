@@ -36,12 +36,36 @@ class SolicituController extends Controller
         return response()->json(['message' => 'ID de estado cambiado exitosamente']);
     }
 
+
+    public function indexAceptados()
+    {
+        try {
+            // Obtener todos los vehículos con solicitudes aceptadas
+            $vehiculosAceptados = Vehiculo::whereHas('solicitud', function ($query) {
+                $query->where('estado', 'aceptado');
+            })->get();
+
+            // Puedes devolver la colección de vehículos en la respuesta
+            return response()->json(['success' => true, 'vehiculos_aceptados' => $vehiculosAceptados]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos aceptados. ' . $e->getMessage()]);
+        }
+    }
+
     public function indexPendientes()
     {
-        $solicitudes = Solicitud::whereIn('estado', ['pendiente', 'aceptado'])
-        ->with('vehiculos') // Eager load para evitar N+1 queries
-        ->get();
+        try {
+            // Obtener todos los vehículos con solicitudes pendientes
+            $vehiculosPendientes = Vehiculo::whereHas('solicitud', function ($query) {
+                $query->where('estado', 'pendiente');
+            })->get();
 
-        return response()->json(['solicitudes' => $solicitudes], 200);
+            // Puedes devolver la colección de vehículos en la respuesta
+            return response()->json(['success' => true, 'vehiculos_pendientes' => $vehiculosPendientes]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos pendientes. ' . $e->getMessage()]);
+        }
     }
 }
