@@ -2,68 +2,58 @@
 
 namespace Tests\Feature;
 
+use App\Models\Vehiculo;
+use App\Models\Solicitud;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class RecuperacionTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
 
-    public function testUserCanResetPassword()
+    public function testIndexAceptados()
     {
-        // Crear un usuario en la base de datos
+        // Crea un usuario y autentícalo
         $user = User::factory()->create();
+        Sanctum::actingAs($user);
 
-        // Olvidar la contraseña del usuario
-        $response = $this->post('/forgot-password', ['email' => $user->email]);
+        // Crea vehículos con solicitudes aceptadas
+        $vehiculosAceptados = Vehiculo::factory()->has(
+            Solicitud::factory()->state(['estado' => 2])
+        )->count(3)->create();
 
-        // Obtener el token de restablecimiento de la base de datos
-        $token = Password::getRepository()->create($user);
+        // Hace la solicitud a la ruta indexAceptados
+        $response = $this->json('get', 'api/solicitudes/aceptados');
 
-        // Restablecer la contraseña
-        $newPassword = 'newpassword123';
-        $response = $this->post('/reset-password', [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => $newPassword,
-            'password_confirmation' => $newPassword,
-        ]);
+        // Verifica que la respuesta sea exitosa
+        $response->assertStatus(200)
+            ->assertJson(['success' => true]);
 
-        // Verificar que la contraseña del usuario haya sido actualizada
-    $hashedPassword = $user->fresh()->password;
-    $this->assertTrue(Hash::check($newPassword, $hashedPassword));
+        // Verifica que la respuesta contiene los vehículos aceptados
+        $response->assertJsonCount(count($vehiculosAceptados), 'vehiculos_aceptados');
+    }
 
-    // Imprimir información de depuración
-    dump("New Password: $newPassword");
-    dump("Hashed Password: $hashedPassword");
+    public function testIndexPendientes()
+    {
+        // Crea un usuario y autentícalo
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
 
-    // Verificar que la respuesta sea exitosa
-    $response->assertJson(['status' => __('Cambio de clave exitoso')]);
-}
-    // public function testUserCanResetPasswordWithValidToken()
-    // {
-    //     // Crear un usuario
-    //     $user = User::factory()->create();
+        // Crea vehículos con solicitudes pendientes
+        $vehiculosPendientes = Vehiculo::factory()->has(
+            Solicitud::factory()->state(['estado' => 1])
+        )->count(3)->create();
 
-    //     // Solicitar un enlace de restablecimiento de contraseña
-    //     $token = Password::createToken($user);
+        // Hace la solicitud a la ruta indexPendientes
+        $response = $this->json('get', 'api/solicitudes/pendientes');
 
-    //     // Hacer una solicitud para restablecer la contraseña con el token válido
-    //     $response = $this->postJson(route('password.reset'), [
-    //         'email' => $user->email,
-    //         'token' => $token,
-    //         'password' => 'newpassword',
-    //         'password_confirmation' => 'newpassword',
-    //     ]);
+        // Verifica que la respuesta sea exitosa
+        $response->assertStatus(200)
+            ->assertJson(['success' => true]);
 
-    //     // Verificar que la contraseña se ha restablecido correctamente
-    //     $this->assertTrue(Hash::check('newpassword', $user->fresh()->password));
-    // }
-
-    
+        // Verifica que la respuesta contiene los vehículos pendientes
+        $response->assertJsonCount(count($vehiculosPendientes), 'vehiculos_pendientes');
+    }
 }

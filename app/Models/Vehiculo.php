@@ -25,6 +25,11 @@ class Vehiculo extends Model
         'contrato_id',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     // Puedes definir relaciones con otros modelos aquí si es necesario
 
     // Ejemplo de relación con Solicitud
