@@ -43,10 +43,10 @@ class SolicituController extends Controller
     public function indexAceptados()
     {
         try {
-            // Obtener todos los vehículos con solicitudes aceptadas
+            // Obtener todos los vehículos con solicitudes aceptadas y contrato NULL
             $vehiculosAceptados = Vehiculo::whereHas('solicitud', function ($query) {
-                $query->where('estado', 'aceptado');
-            })->get();
+                $query->where('estado', 'aceptado')->where('contrato_id',);
+            })->get(); // Excluye vehículos con contratos
     
             // Puedes devolver la colección de vehículos en la respuesta
             return response()->json(['success' => true, 'vehiculos_aceptados' => $vehiculosAceptados]);
@@ -55,6 +55,7 @@ class SolicituController extends Controller
             return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos aceptados. ' . $e->getMessage()]);
         }
     }
+    
     
     public function indexPendientes()
     {
