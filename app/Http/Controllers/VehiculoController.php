@@ -24,9 +24,9 @@ class VehiculoController extends Controller
                     'numero_pasajero' => 'required|integer',
                     // 'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ],
-                [
-                    'placas.unique' => 'Ya existe un vehículo con estas placas ',
-                ]
+                    [
+                        'placas.unique' => 'Ya existe un vehículo con estas placas ',
+                    ]
             );
 
             // Subir imagen a Cloudinary

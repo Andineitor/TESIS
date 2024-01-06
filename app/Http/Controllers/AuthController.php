@@ -26,7 +26,13 @@ class AuthController extends Controller
         'email' => 'required|email|unique:users,email|max:30',
         'role_id' => 'required|exists:roles,id',
         'password' => 'required|min:6|string',
-    ]);
+    ],
+    
+        [
+            'cedula.unique' => 'Ya existe un usuario con esa cedula ',
+        ]
+    
+);
 
     try {
         $role = Role::find($request->role_id);
