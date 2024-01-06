@@ -28,9 +28,18 @@ class SolicituController extends Controller
         $vehiculo->solicitud_id = $nuevoIdEstado;
         $vehiculo->save();
     
-        return response()->json(['message' => 'ID de estado cambiado exitosamente']);
+        // Mensaje según el nuevo estado
+        $mensaje = '';
+        if ($nuevoIdEstado == 2) {
+            $mensaje = 'Solicitud aceptada';
+        } elseif ($nuevoIdEstado == 3) {
+            $mensaje = 'Solicitud rechazada';
+        }
+    
+        return response()->json(['message' => 'ID de estado cambiado exitosamente', 'estado' => $mensaje]);
     }
 
+    
     public function indexAceptados()
     {
         try {

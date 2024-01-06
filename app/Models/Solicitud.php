@@ -17,4 +17,7 @@ class Solicitud extends Model
     {
         return $this->hasone(Vehiculo::class);
     }
+
+    
+
 }

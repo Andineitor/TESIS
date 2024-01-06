@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->integer('dias')->nullable();
             $table->enum('contrato', ['contratado', 'disponible'])->default('disponible')   ;
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
 

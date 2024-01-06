@@ -23,7 +23,6 @@ class AdminTest extends TestCase
 
         // Crear un vehículo con estado 'pendiente'
         $vehiculo = Vehiculo::factory()->create();
-        $solicitudPendiente = Solicitud::where('estado', 'pendiente')->first();
 
         // Crear una solicitud HTTP con el nuevo estado 'aceptado'
         $request = Request::create("/estado/{$vehiculo->id}", 'put', ['estado' => 'aceptado']);

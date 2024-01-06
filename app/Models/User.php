@@ -29,6 +29,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'updated_at',
+        'created_at',
+        'id',
     ];
 
     /**
@@ -45,5 +48,19 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+    
+    public function vehiculos()
+    {
+        return $this->hasMany(Vehiculo::class);
+    }
+
+    public function solicitudes()
+    {
+        return $this->hasMany(Solicitud::class);
+    }
+    public function contratos()
+    {
+        return $this->hasMany(Contrato::class);
     }
 }

@@ -12,11 +12,22 @@ class Contrato extends Model
     protected $table = 'contratos'; 
 
 
-    protected $fillable = ['contrato','dias'];
+    protected $fillable = ['contrato','dias', 'user_id',
+];
 
+
+protected $hidden = [
+    'created_at',
+    'updated_at',
+];
     public function vehiculos()
     {
         return $this->hasMany(Vehiculo::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
     
 }

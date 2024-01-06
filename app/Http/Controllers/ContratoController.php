@@ -10,13 +10,17 @@ class ContratoController extends Controller
 {
     public function contrato(Request $request, $vehiculoId, $diasContratados)
     {
+        $usuarioId = auth()->user()->id;
+
         try {
             // Crear un nuevo contrato
             $contrato = Contrato::create([
                 'dias' => $diasContratados,
-                'contrato' => 'contratado',  // Estado ini cial contratado
+                'contrato' => 'contratado',
+                'user_id' => $usuarioId,
+                // Estado inicial contratado
             ]);
-            
+
             // Obtener el vehículo por su ID
             $vehiculo = Vehiculo::find($vehiculoId);
 
@@ -29,19 +33,31 @@ class ContratoController extends Controller
         }
     }
 
-    public function indexContrato($userId)
-{
-    try {
-        // Obtener todos los vehículos contratados por el usuario específico
-        $vehiculosContratados = Vehiculo::where('usuario_id', $userId)->whereHas('contrato', function ($query) {
-            $query->where('contrato', 'contratado');
-        })->get();
+    public function indexContrato()
+    {
+        $usuarioId = auth()->user()->id;
 
-        // Puedes devolver la colección de vehículos en la respuesta
-        return response()->json(['success' => true, 'vehiculos_contratados' => $vehiculosContratados]);
+        try {
+            // Obtener todos los vehículos contratados por el usuario específico
+            $contratosUsuario = Contrato::where('user_id', $usuarioId)->get();
 
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos contratados. ' . $e->getMessage()]);
+            $contratosDetallados = [];
+
+            foreach ($contratosUsuario as $contrato) {
+                $vehiculo = Vehiculo::where('contrato_id', $contrato->id)->first();
+
+                if ($vehiculo) {
+                    $contratosDetallados[] = [
+                        'contrato' => $contrato,
+                        'vehiculo' => $vehiculo,
+                    ];
+                }
+            }
+
+            return response()->json(['success' => true, 'contratos_detallados' => $contratosDetallados]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al obtener los contratos. ' . $e->getMessage()]);
+        }
     }
-}
 }

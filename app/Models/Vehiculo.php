@@ -23,6 +23,7 @@ class Vehiculo extends Model
         'descripcion',
         'solicitud_id',
         'contrato_id',
+        'user_id',
     ];
 
     protected $hidden = [
@@ -41,6 +42,11 @@ class Vehiculo extends Model
 public function contrato()
 {
     return $this->belongsTo(Contrato::class, 'solicitud_id');
+}
+
+public function user()
+{
+    return $this->belongsTo(User::class);
 }
 }
 

@@ -58,7 +58,6 @@ class AutenticacionTest extends TestCase
             'role_id' => 1,
             'password' => 'password123',
         ]);
-
         $user = User::where('email', $response['user']['email'])->first();
 
         // Simula una solicitud POST al endpoint de login
@@ -68,14 +67,10 @@ class AutenticacionTest extends TestCase
         ]);
 
         // Verifica que la respuesta tenga el código 200 (OK)
-// Verifica que la respuesta tenga el código 200 (OK)
-// Verifica que la respuesta tenga el código 200 (OK)
         $response->assertStatus(200);
 
         // Verifica que la respuesta contenga un token de autenticación
         $this->assertNotNull($response->json()['token']);
-
-
     }
 
 

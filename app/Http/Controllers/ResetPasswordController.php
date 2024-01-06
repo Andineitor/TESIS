@@ -2,48 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
-    use ResetsPasswords;
-
-    protected $redirectTo = '/home'; // Puedes cambiar esta ruta según tus necesidades
-
-    
-
-    protected function reset(Request $request)
+    public function reset(Request $request)
     {
         $request->validate([
-            'token' => 'required',
             'email' => 'required|email',
+            'token' => 'required|string',
             'password' => 'required|confirmed|min:8',
         ]);
-    
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->forceFill([
-                    'password' => bcrypt($password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+                $user->forceFill(['password' => bcrypt($password)])->save();
             }
         );
-    
+
         if ($status == Password::PASSWORD_RESET) {
-            return response()->json(['status' => __('Cambio de clave exitoso')]);
+            return response()->json(['status' => 'success', 'message' => 'Contraseña restablecida con éxito']);
+        } elseif ($status == Password::INVALID_TOKEN) {
+            return response()->json(['status' => 'failed', 'message' => 'El token de restablecimiento de contraseña no es válido'], 400);
+        } elseif ($status == Password::INVALID_USER) {
+            return response()->json(['status' => 'failed', 'message' => 'No se encontró un usuario con esa dirección de correo electrónico'], 400);
+        } elseif ($status == Password::RESET_THROTTLED) {
+            return response()->json(['status' => 'failed', 'message' => 'Demasiados intentos de restablecimiento de contraseña. Por favor, espere antes de intentarlo de nuevo'], 400);
         } else {
-            // Agregar un comentario en caso de error
-            $user = User::where('email', $request->email)->first();
-            $user->comments()->create([
-                'comment' => 'Error al cambiar la contraseña: ' . $status,
-            ]);
-    
-            return response()->json(['email' => [__($status)]], 400);
+            return response()->json(['status' => 'failed', 'message' => 'Error al restablecer la contraseña'], 400);
         }
     }
 }

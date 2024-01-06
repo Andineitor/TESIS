@@ -19,8 +19,7 @@ class SolicitudFactory extends Factory
         return [
             //
 
-            'estado' => $this->faker->randomElement(['pendiente', 'aprobada', 'rechazada']),
-
+            'estado' => 'aceptado',
         ];
     }
 }

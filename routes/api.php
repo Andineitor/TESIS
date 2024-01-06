@@ -42,9 +42,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //muestra los vehiculos solo cuando su estado_id es = aceptada 
     //eso se supone que solo lo hace el admin
-    Route::get('/aceptados', [VehiculoController::class, 'indexCliente']);
 
-    Route::get('/pendientes', [SolicituController::class, 'indexPendientes']);
     Route::get('/contratados', [ContratoController::class, 'indexContrato']);
 
 
@@ -61,8 +59,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato']);
 
 
+
+    Route::get('/propietario/aceptado', [VehiculoController::class, 'index']);
     Route::get('/solicitudes/pendientes', [SolicituController::class, 'indexPendientes']);
-    Route::get('/solicitudes/aceptados', [SolicituController::class, 'indexAceptados']);
+    Route::get('aceptados', [SolicituController::class, 'indexAceptados']);
+    
 
 
 
@@ -74,10 +75,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 // Ruta para procesar la solicitud de restablecimiento
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'forgot'])->name('password.email');
 
 
 
 // Ruta para procesar el restablecimiento de la contraseña
-Route::get('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
