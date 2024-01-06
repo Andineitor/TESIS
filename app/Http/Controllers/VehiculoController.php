@@ -22,7 +22,7 @@ class VehiculoController extends Controller
                     'marca' => 'required|string',
                     'placas' => 'required|unique:vehiculos,placas',
                     'numero_pasajero' => 'required|integer',
-                    // 'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ],
                     [
                         'placas.unique' => 'Ya existe un vehículo con estas placas ',
@@ -47,7 +47,7 @@ class VehiculoController extends Controller
                 'marca' => $request->input('marca'),
                 'placas' => $request->input('placas'),
                 'numero_pasajero' => $request->input('numero_pasajero'),
-                // 'image_url' => $cloudinaryUpload->->getSecurePath(),
+                'image_url' => $cloudinaryUpload->getSecurePath(),
                 'costo_alquiler' => $request->input('costo_alquiler'),
                 'contacto' => $request->input('contacto'),
                 'descripcion' => $request->input('descripcion'),
