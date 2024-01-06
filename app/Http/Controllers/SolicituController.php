@@ -11,20 +11,33 @@ class SolicituController extends Controller
 {
     
     
-    public function estado()
+    public function estado(Request $request, $id)
     {
-        // Crear un vehículo y una solicitud
-        $vehiculo = Vehiculo::factory()->create();
-        $solicitud = Solicitud::factory()->create(['estado' => 'nuevo']);
+        // Validar que el vehículo existe
+        $vehiculo = Vehiculo::findOrFail($id);
 
-        // Realizar una solicitud para cambiar el estado del vehículo
-        $response = $this->json('POST', "/api/solicitud/{$vehiculo->id}/estado", ['estado' => $solicitud->id]);
+        // Validar que el nuevo id de estado sea válido
+        $nuevoIdEstado = $request->input('estado');
 
-        // Verificar que la respuesta sea exitosa
-        $response->assertStatus(200);
+        // Validar que el nuevo id de estado exista en la tabla de solicitudes
+        $solicitudExistente = Solicitud::find($nuevoIdEstado);
+        if (!$solicitudExistente) {
+            return response()->json(['error' => 'ID de estado no válido'], 422);
+        }
 
-        // Verificar que el estado del vehículo haya cambiado
-        $this->assertEquals($solicitud->id, $vehiculo->fresh()->solicitud_id);
+        // Cambiar el id de estado del vehículo
+        $vehiculo->solicitud_id = $nuevoIdEstado;
+        $vehiculo->save();
+
+        // Mensaje según el nuevo estado
+        $mensaje = '';
+        if ($nuevoIdEstado == 2) {
+            $mensaje = 'Solicitud aceptada';
+        } elseif ($nuevoIdEstado == 3) {
+            $mensaje = 'Solicitud rechazada';
+        }
+
+        return response()->json(['message' => 'ID de estado cambiado exitosamente', 'estado' => $mensaje]);
     }
     
     public function indexAceptados()
