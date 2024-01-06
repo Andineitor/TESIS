@@ -11,7 +11,7 @@ class SolicituController extends Controller
 {
     
     
-    public function testCambioDeEstadoExitoso()
+    public function estado()
     {
         // Crear un vehículo y una solicitud
         $vehiculo = Vehiculo::factory()->create();
