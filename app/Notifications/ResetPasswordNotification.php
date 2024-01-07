@@ -48,7 +48,7 @@ class ResetPasswordNotification extends Notification
     protected function createUrl($token)
     {
         // Personaliza la lógica para construir la URL según tus necesidades
-        return 'https://cargod.netlify.app/reset-password/' . $token;
+        return 'https://cargod.netlify.app/reset-password/'.$token;
     }
 
     /**

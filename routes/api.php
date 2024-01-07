@@ -80,47 +80,60 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 
-
 // Ruta para mostrar el formulario de restablecimiento de contraseña
 Route::get('/reset-password/{token}', function (string $token) {
-    return view('auth.reset-password', ['token' => $token]);
+    try {
+        // Aquí puedes verificar el token y realizar otras acciones si es necesario
+        // Si solo necesitas mostrar el formulario, no necesitas hacer mucho aquí
+        return view('auth.reset-password', ['token' => $token]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
+    }
 })->middleware('guest')->name('password.reset');
 
 // Ruta para enviar el correo de restablecimiento de contraseña
 Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
+    try {
+        $request->validate(['email' => 'required|email']);
 
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
 
-    return $status === Password::RESET_LINK_SENT
-        ? Response::json(['message' => __('Correo enviado con exito')], 200)
-        : Response::json(['message' => __($status)], 422);
+        return $status === Password::RESET_LINK_SENT
+            ? Response::json(['message' => __('Correo enviado con éxito')], 200)
+            : Response::json(['error' => 'Error al enviar el correo: ' . __($status)], 422);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
+    }
 })->middleware('guest')->name('password.email');
 
 // Ruta para procesar el restablecimiento de contraseña
 Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
+    try {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
 
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function (User $user, string $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
 
-            $user->save();
+                $user->save();
 
-            event(new PasswordReset($user));
-        }
-    );
+                event(new PasswordReset($user));
+            }
+        );
 
-    return $status === Password::PASSWORD_RESET
-        ? Response::json(['message' => __('Contraseña cambiada exitosamente')], 200)
-        : Response::json(['message' => __($status)], 422);
+        return $status === Password::PASSWORD_RESET
+            ? Response::json(['message' => __('Contraseña cambiada exitosamente')], 200)
+            : Response::json(['error' => 'Error al restablecer la contraseña: ' . __($status)], 422);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
+    }
 })->middleware('guest')->name('password.update');
