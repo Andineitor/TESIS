@@ -15,31 +15,89 @@ class AdminTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testEstadoCambiaCorrectamente()
+    public function testCambioDeEstadoExitoso()
     {
-        // Crear un usuario autenticado (puedes ajustar esto según tus necesidades)
+        // Crea un usuario y un vehículo asociado
         $user = User::factory()->create();
+        $vehiculo = Vehiculo::factory()->create(['user_id' => $user->id]);
+
+        // Crea una solicitud
+        $solicitud = Solicitud::factory()->create();
+
+        // Simula un usuario autenticado
         $this->actingAs($user);
 
-        // Crear un vehículo con estado 'pendiente'
-        $vehiculo = Vehiculo::factory()->create();
+        // Realiza una solicitud directa a la API para cambiar el estado
+        $response = $this->json('POST', "/api/estado/{$vehiculo->id}", [
+            'estado' => $solicitud->id,
+        ]);
 
-        // Crear una solicitud HTTP con el nuevo estado 'aceptado'
-        $request = Request::create("/estado/{$vehiculo->id}", 'put', ['estado' => 'aceptado']);
+        // Verifica que la respuesta contiene la información esperada
+        $response->assertJson(['message' => 'ID de estado cambiado exitosamente']);
+        $response->assertStatus(200);
 
-        // Crear una instancia del controlador
-        $controller = new SolicituController();
+        // Verifica que el vehículo haya sido actualizado correctamente en la base de datos
+        $this->assertDatabaseHas('vehiculos', [
+            'id' => $vehiculo->id,
+            'solicitud_id' => $solicitud->id,
+        ]);
+    }
 
-        // Ejecutar el método estado del controlador
-        $response = $controller->estado($request, $vehiculo->id);
 
-        // Verificar que la respuesta indica que el cambio de estado no fue exitoso
-        $this->assertEquals(422, $response->status());
 
-        // Recargar el vehículo desde la base de datos para obtener la última información
-        $vehiculoActualizado = Vehiculo::find($vehiculo->id);
+    ///
+    public function testIndexAceptados()
+    {
+        try {
+            // Obtener todos los vehículos con solicitudes aceptadas
+            $vehiculosAceptados = Vehiculo::whereHas('solicitud', function ($query) {
+                $query->where('estado', 'aceptados');
+            })->get();
 
-        // Verificar que el estado del vehículo no haya cambiado correctamente
-        $this->assertNotEquals('aceptado', $vehiculoActualizado->solicitud->estado);
+            // Realizar una solicitud HTTP al endpoint correspondiente
+            $response = $this->get('/aceptados');
+
+            // Verificar que la respuesta tenga un código HTTP 200 (éxito)
+            $response->assertStatus(200);
+
+            // Obtener la colección de vehículos desde la respuesta JSON
+            $responseVehiculos = collect($response->json('vehiculos_aceptados'));
+
+            // Verificar que la colección de la respuesta tiene la misma cantidad de vehículos aceptados
+            $this->assertCount($vehiculosAceptados->count(), $responseVehiculos);
+
+            return response()->json(['success' => true, 'vehiculos_aceptados' => $responseVehiculos]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos aceptados. ' . $e->getMessage()]);
+        }
+    }
+
+
+    public function testIndexPendientes()
+    {
+        try {
+            // Obtener todos los vehículos con solicitudes pendientes
+            $vehiculosAceptados = Vehiculo::whereHas('solicitud', function ($query) {
+                $query->where('estado', 'pendiente');
+            })->get();
+
+            // Realizar una solicitud HTTP al endpoint correspondiente
+            $response = $this->get('/aceptados');
+
+            // Verificar que la respuesta tenga un código HTTP 200 (éxito)
+            $response->assertStatus(200);
+
+            // Obtener la colección de vehículos desde la respuesta JSON
+            $responseVehiculos = collect($response->json('vehiculos_aceptados'));
+
+            // Verificar que la colección de la respuesta tiene la misma cantidad de vehículos aceptados
+            $this->assertCount($vehiculosAceptados->count(), $responseVehiculos);
+
+            return response()->json(['success' => true, 'vehiculos_aceptados' => $responseVehiculos]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos aceptados. ' . $e->getMessage()]);
+        }
     }
 }

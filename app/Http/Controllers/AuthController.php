@@ -18,8 +18,8 @@ class AuthController extends Controller
      public function registro(Request $request)
 {
     $request->validate([
-        'nombre' => 'required|string|max:10',
-        'apellido' => 'required|string|max:10',
+        'nombre' => 'required|string|max:20',
+        'apellido' => 'required|string|max:20',
         'cedula'=>'required|string|max:10',
         'direccion' => 'required|string|nullable',
         'celular' => 'required|max:10',

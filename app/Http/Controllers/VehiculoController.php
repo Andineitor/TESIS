@@ -29,7 +29,7 @@ class VehiculoController extends Controller
                     ]
             );
 
-            // Subir imagen a Cloudinary
+            // // Subir imagen a Cloudinary
             $imagePath = $request->file('image_url')->getRealPath();
             $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'vehiculos']);
 
