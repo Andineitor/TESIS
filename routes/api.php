@@ -1,13 +1,20 @@
 <?php
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\Support\Facades\Response;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContratoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SolicituController;
 use App\Http\Controllers\VehiculoController;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,11 +81,46 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 
-// Ruta para procesar la solicitud de restablecimiento
-Route::post('/forgot-password', [ForgotPasswordController::class, 'forgot'])->name('password.email');
+// Ruta para mostrar el formulario de restablecimiento de contraseña
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
 
+// Ruta para enviar el correo de restablecimiento de contraseña
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
 
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
 
-// Ruta para procesar el restablecimiento de la contraseña
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
+    return $status === Password::RESET_LINK_SENT
+        ? Response::json(['message' => __('Correo enviado con exito')], 200)
+        : Response::json(['message' => __($status)], 422);
+})->middleware('guest')->name('password.email');
 
+// Ruta para procesar el restablecimiento de contraseña
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+
+            $user->save();
+
+            event(new PasswordReset($user));
+        }
+    );
+
+    return $status === Password::PASSWORD_RESET
+        ? Response::json(['message' => __('Contraseña cambiada exitosamente')], 200)
+        : Response::json(['message' => __($status)], 422);
+})->middleware('guest')->name('password.update');
