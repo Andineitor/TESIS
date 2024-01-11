@@ -17,7 +17,6 @@ class ResetPasswordController extends Controller
         ]);
 
         try {
-            Log::info('Reset Password: Starting reset process for email ' . $request->input('email'));
 
             $response = $this->broker()->reset(
                 $this->credentials($request),
