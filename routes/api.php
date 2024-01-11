@@ -84,5 +84,5 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'sendResetLinkResponse'])->name('password.reset');
 
 
-Route::post('/reset/{token}', [ResetPasswordController::class, 'reset'])->name('password.reset');
+Route::post('/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
