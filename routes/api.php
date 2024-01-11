@@ -79,6 +79,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 //rutas reset password
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset'); // This route is for rendering the password reset form.
+Route::get('/reset/{token}', [ForgotPasswordController::class, 'sendResetLinkResponse'])->name('password.reset'); // This route is for rendering the password reset form.
 
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
