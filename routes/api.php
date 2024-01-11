@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Response;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResetPasswordController;
@@ -61,7 +62,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //contratar vehiculos y ver los contratos que tengo
     //CLIENTE
-    Route::post('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato'])->name('contratos.contrato');
+    Route::put('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato'])->name('contratos.contrato');
     Route::get('/contratados', [ContratoController::class, 'indexContrato']);
     //mira los vehiculos a disposicion
     Route::get('aceptados', [SolicituController::class, 'indexAceptados']);
@@ -75,61 +76,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 
-// Ruta para mostrar el formulario de restablecimiento de contraseña
-Route::get('/reset-password/{token}', function (string $token) {
-    try {
-        return view('auth.reset-password', ['token' => $token]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
-    }
-})->middleware('guest')->name('password.reset');
+//rutas reset password
 
-// Ruta para enviar el correo de restablecimiento de contraseña
-Route::post('/forgot-password', function (Request $request) {
-    try {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        return $status === Password::RESET_LINK_SENT
-            ? Response::json(['message' => __('Correo enviado con éxito')], 200)
-            : Response::json(['error' => 'Error al enviar el correo: ' . __($status)], 422);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
-    }
-})->middleware('guest')->name('password.email');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
 
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'sendResetLinkResponse'])->name('password.reset');
 
 
-// Ruta para procesar el restablecimiento de contraseña
-Route::post('/reset-password', function (Request $request) {
-    try {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
+Route::post('/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
-
-                $user->save();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        return $status === Password::PASSWORD_RESET
-            ? Response::json(['message' => __('Contraseña cambiada exitosamente')], 200)
-            : Response::json(['error' => 'Error al restablecer la contraseña: ' . __($status)], 422);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
-    }
-})->middleware('guest')->name('password.update');
