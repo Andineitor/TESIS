@@ -12,7 +12,7 @@ class ForgotPasswordController extends Controller
 
     protected function sendResetLinkResponse($response)
     {
-        $resetUrl = 'https://cargod.netlify.app/reset/' . $response['token'];
+        $resetUrl = 'https://cargod.netlify.app/reset-password/' . $response['token'];
 
         // Log información sobre la URL de restablecimiento
         Log::info('Reset URL: ' . $resetUrl);
