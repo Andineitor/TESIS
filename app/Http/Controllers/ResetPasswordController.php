@@ -17,7 +17,6 @@ class ResetPasswordController extends Controller
         ]);
 
         try {
-
             $response = $this->broker()->reset(
                 $this->credentials($request),
                 function ($user, $password) {
@@ -28,9 +27,6 @@ class ResetPasswordController extends Controller
             if ($response == Password::PASSWORD_RESET) {
                 Log::info('Reset Password: Password reset successful for email ' . $request->input('email'));
 
-                // Add a log before the redirection
-                Log::info('Reset Password: Redirecting user after successful password reset.');
-
                 return response(['message' => trans('passwords.reset')], 200);
             } else {
                 Log::warning('Reset Password: Password reset failed for email ' . $request->input('email'));
@@ -38,10 +34,6 @@ class ResetPasswordController extends Controller
             }
         } catch (\Exception $e) {
             Log::error('Reset Password: Exception - ' . $e->getMessage());
-
-            // Add a log before returning the error response
-            Log::error('Reset Password: Error occurred during password reset.');
-
             return response(['error' => $e->getMessage()], 500);
         }
     }
