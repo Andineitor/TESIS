@@ -5,21 +5,26 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends Controller
 {
     use SendsPasswordResetEmails;
 
-    protected function sendResetLinkResponse($response)
+    protected function sendResetLinkEmail(Request $request)
     {
-        $resetUrl = 'https://cargod.netlify.app/reset-password/' . $response['token'];
+        $this->validateEmail($request);
 
-        // Log información sobre la URL de restablecimiento
-        Log::info('Reset URL: ' . $resetUrl);
+        $response = $this->broker()->sendResetLink(
+            $this->credentials($request)
+        );
 
-        return response(['message' => trans($response['message']), 'reset_url' => $resetUrl], 200);
+        return $response == Password::RESET_LINK_SENT
+            ? response(['message' => trans($response)], 200)
+            : response(['error' => trans($response)], 400);
     }
+}
 
 
     
-}
+
