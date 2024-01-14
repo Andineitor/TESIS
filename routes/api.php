@@ -83,7 +83,7 @@ Route::post('/forgot-password', function (Request $request) {
     $request->validate(['email' => 'required|email']);
  
     $status = Password::sendResetLink(
-        $request->only('email')
+        $request->only('email'),
     );
  
     return $status === Password::RESET_LINK_SENT
@@ -95,14 +95,13 @@ Route::post('/forgot-password', function (Request $request) {
 
 
 Route::get('/reset-password/{token}', function (string $token) {
-    $frontendUrl = config('https://cargod.netlify.app'); // Obtén la URL del frontend desde tu configuración
-
-    // Puedes personalizar la URL del frontend con el token como query parameter
+    $frontendUrl = config('https://cargod.netlify.app');
     $redirectUrl = $frontendUrl . '/reset-password' . $token;
 
-    // Redirige a la URL del frontend con el token como query parameter
-    return Redirect::to($redirectUrl);
+    // Retorna el token en la respuesta JSON
+    return response()->json(['token' => $token, 'redirect_url' => $redirectUrl]);
 })->middleware('guest')->name('password.reset');
+
 
 
 
