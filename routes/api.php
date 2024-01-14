@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
 /*
@@ -55,7 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //para cambiar estado de la solicitud del auto y todas las solicitudes
     //ADMIN
-    Route::post('/estado/{id}', [SolicituController::class, 'estado']);
+    Route::put('/estado/{id}', [SolicituController::class, 'estado']);
     Route::get('/solicitudes/pendientes', [SolicituController::class, 'indexPendientes']);
 
 
@@ -70,7 +71,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
     //para deslogearse y eliminar el token de autenticacion
-    //RODOS LOS REOLES
+    //TODOS LOS REOLES
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -78,8 +79,54 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 //rutas reset password
 
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+ 
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+ 
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
 
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'verifyToken']);
 
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+Route::get('/reset-password/{token}', function (string $token) {
+    $frontendUrl = config('https://cargod.netlify.app'); // Obtén la URL del frontend desde tu configuración
+
+    // Puedes personalizar la URL del frontend con el token como query parameter
+    $redirectUrl = $frontendUrl . '/reset-password' . $token;
+
+    // Redirige a la URL del frontend con el token como query parameter
+    return Redirect::to($redirectUrl);
+})->middleware('guest')->name('password.reset');
+
+
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+ 
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+ 
+            $user->save();
+ 
+            event(new PasswordReset($user));
+        }
+    );
+ 
+    return $status === Password::PASSWORD_RESET
+                ? redirect()->route('login')->with('status', __($status))
+                : back()->withErrors(['email' => [__($status)]]);
+})->middleware('guest')->name('password.update');
