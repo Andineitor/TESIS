@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //contratar vehiculos y ver los contratos que tengo
     //CLIENTE
-    Route::put('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato'])->name('contratos.contrato');
+    Route::post('/contratos/{vehiculoId}/{diasContratados}', [ContratoController::class, 'contrato'])->name('contratos.contrato');
     Route::get('/contratados', [ContratoController::class, 'indexContrato']);
     //mira los vehiculos a disposicion
     Route::get('aceptados', [SolicituController::class, 'indexAceptados']);
