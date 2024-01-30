@@ -12,7 +12,7 @@ class Contrato extends Model
     protected $table = 'contratos'; 
 
 
-    protected $fillable = ['contrato','dias', 'user_id',
+    protected $fillable = ['contrato','dias', 'user_id', 'fecha_fin'
 ];
 
 

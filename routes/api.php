@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // para editar la informacion perosonal
     //TODOS LOS ROLES
-    Route::put('/update/{id}', [AuthController::class, 'update']);
+    Route::put('/update', [AuthController::class, 'update']);
 
 
     //registrta vehiculo y ver las solicitudes echas
@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //mira los vehiculos a disposicion
     Route::get('aceptados', [SolicituController::class, 'indexAceptados']);
 
+    
+
+Route::get('final', [ContratoController::class, 'finalizarContratos']);
 
 
     //para deslogearse y eliminar el token de autenticacion
@@ -79,19 +82,23 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 
+
 //rutas reset password
 
 Route::post('/forgot-password', function (Request $request) {
     $request->validate(['email' => 'required|email']);
- 
+
     $status = Password::sendResetLink(
         $request->only('email'),
     );
- 
-    return $status === Password::RESET_LINK_SENT
-                ? back()->with(['status' => __($status)])
-                : back()->withErrors(['email' => __($status)]);
+
+    if ($status === Password::RESET_LINK_SENT) {
+        return response()->json(['message' => __('¡Se ha enviado un enlace de restablecimiento de contraseña a tu dirección de correo electrónico!')], 200);
+    } else {
+        return response()->json(['error' => __('Se ha producido un error al enviar el enlace de restablecimiento de contraseña.')], 400);
+    }
 })->middleware('guest')->name('password.email');
+
 
 
 

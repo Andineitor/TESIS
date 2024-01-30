@@ -20,7 +20,7 @@ class VehiculoController extends Controller
                 [
                     'tipo_vehiculo' => 'required|string',
                     'marca' => 'required|string',
-                    'placas' => 'required|unique:vehiculos,placas',
+                    'placas' => 'required|unique:vehiculos,placas|min:4|max:8',
                     'numero_pasajero' => 'required|integer',
                     'image_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ],
@@ -53,6 +53,7 @@ class VehiculoController extends Controller
                 'descripcion' => $request->input('descripcion'),
                 'solicitud_id' => $estadoPendienteId,
                 'user_id' => $usuarioId,
+                
             ]);
 
             // Respuesta de éxito en formato JSON

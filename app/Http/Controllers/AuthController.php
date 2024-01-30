@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -22,17 +23,25 @@ class AuthController extends Controller
         'apellido' => 'required|string|max:20',
         'cedula'=>'required|string|max:10',
         'direccion' => 'required|string|nullable',
-        'celular' => 'required|max:10',
+        'celular' => 'required|max:10|min:8',
         'email' => 'required|email|unique:users,email|max:30',
         'role_id' => 'required|exists:roles,id',
-        'password' => 'required|min:6|string',
+        'password' => 'required|min:8|string',
+        'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ],
     
         [
             'cedula.unique' => 'Ya existe un usuario con esa cedula ',
+            'email.unique' => 'Ya existe un usuario con ese email ',
         ]
     
 );
+
+
+      // // Subir imagen a Cloudinary
+      $imagePath = $request->file('avatar')->getRealPath();
+      $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'avatares']);
+
 
     try {
         $role = Role::find($request->role_id);
@@ -51,7 +60,9 @@ class AuthController extends Controller
             'email' => $request->email,
             'role_id' => $role->id,
             'password' => Hash::make($request->password),
+            'avatar' => $cloudinaryUpload->getSecurePath(),
         ]);
+
 
         return response()->json(['user' => $user, 'message' => 'Usuario registrado correctamente'], 201);
     } catch (\Exception $e) {
@@ -127,12 +138,54 @@ class AuthController extends Controller
 
 public function update(Request $request, $id)
 {
-    //
-    $input = $request->all();
-    $user = User::findOrFail($id);
-    $user->update($input);
-    return response()->json(['res'=> true,'message'=> 'Modificado correctamente'],200);
+    $request->validate([
+        'nombre' => 'string|max:20',
+        'apellido' => 'string|max:20',
+        'cedula' => 'string|max:10',
+        'direccion' => 'string|nullable',
+        'celular' => 'max:10|min:8',
+        'email' => 'email|max:30|unique:users,email,' . $id,
+        'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ],
+        [
+            'email.unique' => 'Ya existe un usuario con ese email ',
+        ]
+    );
 
+      // // Subir imagen a Cloudinary
+      $imagePath = $request->file('avatar')->getRealPath();
+      $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'avatares']);
+
+
+    try {
+        // Obtener el ID del usuario autenticado
+        $userId = Auth::id();
+
+        // Buscar al usuario por su ID
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['res' => false, 'message' => 'Usuario no encontrado'], 404);
+        }   
+
+        // Actualizar los campos del usuario con los nuevos valores proporcionados
+        $user->update([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'cedula' => $request->cedula,
+            'direccion' => $request->direccion,
+            'celular' => $request->celular,
+            'email' => $request->email,
+            'avatar' => $cloudinaryUpload->getSecurePath(),
+        ]);
+
+        return response()->json(['user' => $user, 'message' => 'Datos actualizados correctamente'], 200);
+    } catch (\Exception $e) {
+        Log::error('Error al actualizar datos: ' . $e->getMessage());
+        return response()->json(['res' => false, 'message' => 'Error al actualizar datos', 'errors' => $e->getMessage()], 500);
+    }
 }
+
+
 
 }

@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::create('contratos', function (Blueprint $table) {
             $table->id();
             $table->integer('dias')->nullable();
-            $table->enum('contrato', ['contratado', 'disponible'])->default('disponible')   ;
+            $table->enum('contrato', ['contratado', 'finalizado']);
+            $table->date('fecha_fin')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
