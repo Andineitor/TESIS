@@ -19,7 +19,7 @@ class Vehiculo extends Model
         'numero_pasajero',
         'image_url',
         'costo_alquiler',
-        'contacto',
+        
         'descripcion',
         'solicitud_id',
         'contrato_id',
