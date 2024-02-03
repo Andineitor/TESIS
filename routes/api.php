@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // para editar la informacion perosonal
     //TODOS LOS ROLES
-    Route::put('/update', [AuthController::class, 'update']);
+    Route::put('/update/{id}', [AuthController::class, 'update']);
 
 
     //registrta vehiculo y ver las solicitudes echas
