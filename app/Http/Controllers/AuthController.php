@@ -130,7 +130,7 @@ class AuthController extends Controller
 }
 
 
-     //USER UPDATE
+
 
 
 
@@ -143,7 +143,7 @@ public function update(Request $request, $id)
         'apellido' => 'string|max:20',
         'cedula' => 'string|max:10',
         'direccion' => 'string|nullable',
-        'celular' => 'max:10|min:8',
+        'celular' => 'max:10|min:10',
         'email' => 'email|max:30|unique:users,email,' . $id,
         'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ],

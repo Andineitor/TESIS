@@ -30,6 +30,7 @@ class VehiculoController extends Controller
             );
 
             // // Subir imagen a Cloudinary
+            
             $imagePath = $request->file('image_url')->getRealPath();
             $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'vehiculos']);
 
@@ -47,6 +48,9 @@ class VehiculoController extends Controller
                 'marca' => $request->input('marca'),
                 'placas' => $request->input('placas'),
                 'numero_pasajero' => $request->input('numero_pasajero'),
+
+                //tiene un warnig. pero es el codigo que esta en la documentacion oficial
+                //hay metodos que no tienen vesriones similare o actualizadas
                 'image_url' => $cloudinaryUpload->getSecurePath(),
                 'costo_alquiler' => $request->input('costo_alquiler'),
                 'contacto' => $request->input('contacto'),

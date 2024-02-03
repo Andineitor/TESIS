@@ -28,10 +28,10 @@ class ContratoController extends Controller
             // Asignar el ID del contrato al vehículo
             $vehiculo->update(['contrato_id' => $contrato->id]);
 
-            Log::info('Fecha de finalización calculada:', ['fecha_fin' => $contrato->fecha_fin]);
+           // Log::info('Fecha de finalización calculada:', ['fecha_fin' => $contrato->fecha_fin]);
 
             // Verificar si el contrato se debe finalizar automáticamente
-            $this->verificarYFinalizarContrato($contrato);
+           // $this->verificarYFinalizarContrato($contrato);
 
             return response()->json(['success' => true, 'message' => 'Contrato creado y vehículo contratado con éxito']);
         } catch (\Exception $e) {

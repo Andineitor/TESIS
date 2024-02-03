@@ -72,4 +72,5 @@ class SolicituController extends Controller
             return response()->json(['success' => false, 'message' => 'Error al obtener los vehículos pendientes. ' . $e->getMessage()]);
         }
 }
+
 }
