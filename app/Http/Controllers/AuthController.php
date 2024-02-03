@@ -27,7 +27,7 @@ class AuthController extends Controller
         'email' => 'required|email|unique:users,email|max:30',
         'role_id' => 'required|exists:roles,id',
         'password' => 'required|min:8|string',
-        'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ],
     
         [
@@ -39,8 +39,8 @@ class AuthController extends Controller
 
 
       // // Subir imagen a Cloudinary
-      $imagePath = $request->file('avatar')->getRealPath();
-      $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'avatares']);
+    //   $imagePath = $request->file('avatar')->getRealPath();
+    //   $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'avatares']);
 
 
     try {
@@ -60,7 +60,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'role_id' => $role->id,
             'password' => Hash::make($request->password),
-            'avatar' => $cloudinaryUpload->getSecurePath(),
+            // 'avatar' => $cloudinaryUpload->getSecurePath(),
         ]);
 
 
@@ -141,11 +141,10 @@ public function update(Request $request, $id)
     $request->validate([
         'nombre' => 'string|max:20',
         'apellido' => 'string|max:20',
-        'cedula' => 'string|max:10',
+        // 'cedula' => 'string|max:10',
         'direccion' => 'string|nullable',
         'celular' => 'max:10|min:10',
-        'email' => 'email|max:30|unique:users,email,' . $id,
-        'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // 'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ],
         [
             'email.unique' => 'Ya existe un usuario con ese email ',
@@ -153,8 +152,8 @@ public function update(Request $request, $id)
     );
 
       // // Subir imagen a Cloudinary
-      $imagePath = $request->file('avatar')->getRealPath();
-      $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'avatares']);
+    //   $imagePath = $request->file('avatar')->getRealPath();
+    //   $cloudinaryUpload = Cloudinary::upload($imagePath, ['folder' => 'avatares']);
 
 
     try {
@@ -176,7 +175,7 @@ public function update(Request $request, $id)
             'direccion' => $request->direccion,
             'celular' => $request->celular,
             'email' => $request->email,
-            'avatar' => $cloudinaryUpload->getSecurePath(),
+            // 'avatar' => $cloudinaryUpload->getSecurePath(),
         ]);
 
         return response()->json(['user' => $user, 'message' => 'Datos actualizados correctamente'], 200);

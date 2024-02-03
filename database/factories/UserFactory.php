@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'celular' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), // Puedes ajustar la contraseña según tus necesidades
-            'role_id' => 1, // Ajusta el ID del rol según tus necesidades
+            'role_id' => 2, // Ajusta el ID del rol según tus necesidades
         ];
     }
 

@@ -19,11 +19,11 @@ return new class extends Migration
 
         });
 
-        DB::table('solicitudes')->insert([
-            ['estado' => 'pendiente'],
-            ['estado' => 'aceptado'],
-            ['estado' => 'rechazado'],
-        ]);
+        // DB::table('solicitudes')->insert([
+        //     ['estado' => 'pendiente'],
+        //     ['estado' => 'aceptado'],
+        //     ['estado' => 'rechazado'],
+        // ]);
     }
 
     /**

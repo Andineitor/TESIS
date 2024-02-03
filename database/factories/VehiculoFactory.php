@@ -24,8 +24,9 @@ class VehiculoFactory extends Factory
             // 'contacto' => $this->faker->word,
             'descripcion' => $this->faker->sentence,
          
-            'solicitud_id' => Solicitud::factory()->create()->id,
-            'user_id' => function () {
+            'solicitud_id' => function () {
+                return Solicitud::factory()->create(['estado' => $this->faker->randomElement(['pendiente', 'aceptado'])])->id;
+            },            'user_id' => function () {
                 return User::factory()->create()->id;
             },
         ];
