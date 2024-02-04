@@ -12,7 +12,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'https://tudominio.herokuapp.com/app/api/documentation
+                'api' => 'https://cargod-cb38f5c42af3.herokuapp.com/api/documentation
                 ',
             ],
             'paths' => [
