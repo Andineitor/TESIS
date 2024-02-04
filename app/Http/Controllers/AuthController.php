@@ -22,7 +22,7 @@ class AuthController extends Controller
     $request->validate([
         'nombre' => 'required|string|max:20',
         'apellido' => 'required|string|max:20',
-        'cedula'=>'required|string|max:10',
+        'cedula'=>'required|string|max:10|unique:users,cedula',
         'direccion' => 'required|string|nullable',
         'celular' => 'required|max:10|min:8',
         'email' => 'required|email|unique:users,email|max:30',
@@ -32,7 +32,7 @@ class AuthController extends Controller
     
         [
             'cedula.unique' => 'Ya existe un usuario con esa cedula ',
-            'email.unique' => 'Ya existe un usuario con ese email ',
+            // 'email.unique' => 'Ya existe un usuario con ese email ',
         ]
     
 );

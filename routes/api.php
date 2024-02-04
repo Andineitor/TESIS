@@ -8,7 +8,7 @@ use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ResetPasswordController;
+use L5Swagger\Facades\L5Swagger;
 use App\Http\Controllers\SolicituController;
 use App\Http\Controllers\VehiculoController;
 use App\Models\User;
@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use L5Swagger\L5SwaggerFacade;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,10 +153,10 @@ Route::post('/reset-password', function (Request $request) {
 //
 // routes/web.php or routes/api.php
 
-Route::get('openapi.json', function () {
-    $path = public_path('openapi.json');
+Route::get('/swagger', function () {
+    // Genera la documentación si es necesario
+    L5SwaggerFacade::generateDocs();
 
-    return response()->file($path, [
-        'Content-Type' => 'application/json',
-    ]);
+    // Retorna la vista de Swagger
+    return view('vendor.l5-swagger.index');
 });
