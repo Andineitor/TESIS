@@ -45,7 +45,7 @@ class SolicituController extends Controller
         try {
             // Obtener todos los vehículos con solicitudes aceptadas y contrato NULL
             $vehiculosAceptados = Vehiculo::whereHas('solicitud', function ($query) {
-                $query->where('estado', 'aceptado')->where('contrato_id',);
+                $query->where('estado', 'aceptado')->where('solicitud_id',);
             })->get(); // Excluye vehículos con contratos
     
             // Puedes devolver la colección de vehículos en la respuesta
