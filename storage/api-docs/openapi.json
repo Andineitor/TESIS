@@ -1,0 +1,680 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CarGod",
+    "version": "1.0.0",
+    "description": "Esta API es la encargada de manejar la logica de manipulación de datos en la Base de Datos de la Empresa CarGod."
+  },
+  "servers": [
+    {
+      "url": "https://cargod-cb38f5c42af3.herokuapp.com/public"
+    }
+  ],
+  "paths": {
+    "/api/registro": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Registro de usuario",
+        "description": "Registro de un nuevo usuario en el sistema.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario registrado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Inicio de sesión",
+        "description": "Inicia sesión con las credenciales del usuario.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inicio de sesión exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Cuenta o contraseña inválida"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Cerrar sesión",
+        "description": "Cierra sesión y revoca el token de acceso.",
+        "responses": {
+          "200": {
+            "description": "Sesión cerrada correctamente"
+          },
+          "401": {
+            "description": "No se ha iniciado sesión"
+          }
+        }
+      }
+    },
+    "/api/user/{id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Actualizar información del usuario",
+        "description": "Actualiza la información del usuario autenticado.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del usuario",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Datos actualizados correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/api/vehiculo": {
+      "post": {
+        "tags": [
+          "Vehiculo"
+        ],
+        "summary": "Registro de vehículo",
+        "description": "Registra un nuevo vehículo en el sistema.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tipo_vehiculo": {
+                    "type": "string"
+                  },
+                  "marca": {
+                    "type": "string"
+                  },
+                  "placas": {
+                    "type": "string"
+                  },
+                  "numero_pasajero": {
+                    "type": "integer"
+                  },
+                  "image_url": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "costo_alquiler": {
+                    "type": "number"
+                  },
+                  "contacto": {
+                    "type": "string"
+                  },
+                  "descripcion": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "tipo_vehiculo",
+                  "marca",
+                  "placas",
+                  "numero_pasajero",
+                  "image_url",
+                  "costo_alquiler",
+                  "contacto"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehículo registrado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/api/vehiculos": {
+      "get": {
+        "tags": [
+          "Vehiculo"
+        ],
+        "summary": "Obtener vehículos del usuario autenticado",
+        "description": "Obtiene la lista de vehículos pertenecientes al usuario autenticado.",
+        "responses": {
+          "200": {
+            "description": "Vehículos obtenidos con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "estadoPropietario": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Vehiculo"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/api/solicitud/{id}/estado": {
+      "put": {
+        "tags": [
+          "Solicitud"
+        ],
+        "summary": "Cambiar estado de la solicitud",
+        "description": "Cambia el estado de la solicitud de un vehículo.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID del vehículo"
+          },
+          {
+            "in": "query",
+            "name": "estado",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Nuevo ID de estado de la solicitud"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado cambiado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "estado": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "ID de estado no válido"
+          }
+        }
+      }
+    },
+    "/api/solicitudes/aceptados": {
+      "get": {
+        "tags": [
+          "Solicitud"
+        ],
+        "summary": "Obtener vehículos con solicitudes aceptadas",
+        "description": "Obtiene la lista de vehículos con solicitudes aceptadas y contrato NULL.",
+        "responses": {
+          "200": {
+            "description": "Vehículos aceptados obtenidos con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "vehiculos_aceptados": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Vehiculo"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/api/solicitudes/pendientes": {
+      "get": {
+        "tags": [
+          "Solicitud"
+        ],
+        "summary": "Obtener vehículos con solicitudes pendientes",
+        "description": "Obtiene la lista de vehículos con solicitudes pendientes.",
+        "responses": {
+          "200": {
+            "description": "Vehículos pendientes obtenidos con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "vehiculos_pendientes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Vehiculo"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/api/contrato/{vehiculoId}/{diasContratados}": {
+      "post": {
+        "tags": [
+          "Contrato"
+        ],
+        "summary": "Crear contrato y contratar vehículo",
+        "description": "Crea un nuevo contrato y asigna el vehículo especificado al contrato por la cantidad de días indicados.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vehiculoId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID del vehículo"
+          },
+          {
+            "in": "path",
+            "name": "diasContratados",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número de días del contrato"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contrato creado y vehículo contratado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al contratar el vehículo"
+          }
+        }
+      }
+    },
+    "/api/contratos": {
+      "get": {
+        "tags": [
+          "Contrato"
+        ],
+        "summary": "Obtener contratos del usuario",
+        "description": "Obtiene todos los contratos asociados al usuario autenticado.",
+        "responses": {
+          "200": {
+            "description": "Contratos obtenidos con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "contratos_detallados": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "contrato": {
+                            "$ref": "#/components/schemas/Contrato"
+                          },
+                          "vehiculo": {
+                            "$ref": "#/components/schemas/Vehiculo"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener los contratos"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "apellido": {
+            "type": "string"
+          },
+          "cedula": {
+            "type": "string"
+          },
+          "direccion": {
+            "type": "string"
+          },
+          "celular": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nombre",
+          "apellido",
+          "cedula",
+          "celular",
+          "email"
+        ]
+      },
+      "UserRegistrationRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "apellido": {
+            "type": "string"
+          },
+          "cedula": {
+            "type": "string"
+          },
+          "direccion": {
+            "type": "string"
+          },
+          "celular": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role_id": {
+            "type": "integer"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nombre",
+          "apellido",
+          "cedula",
+          "celular",
+          "email",
+          "role_id",
+          "password"
+        ]
+      },
+      "UserLoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "res": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "UserUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "apellido": {
+            "type": "string"
+          },
+          "cedula": {
+            "type": "string"
+          },
+          "direccion": {
+            "type": "string"
+          },
+          "celular": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "Vehiculo": {
+        "type": "object",
+        "properties": {
+          "tipo_vehiculo": {
+            "type": "string"
+          },
+          "marca": {
+            "type": "string"
+          },
+          "placas": {
+            "type": "string"
+          },
+          "numero_pasajero": {
+            "type": "integer"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "costo_alquiler": {
+            "type": "number"
+          },
+          "contacto": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo_vehiculo",
+          "marca",
+          "placas",
+          "numero_pasajero",
+          "image_url",
+          "costo_alquiler",
+          "contacto"
+        ]
+      },
+      "Contrato": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "dias": {
+            "type": "integer"
+          },
+          "contrato": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "integer"
+          },
+          "fecha_fin": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "dias",
+          "contrato",
+          "user_id",
+          "fecha_fin"
+        ]
+      }
+    }
+  }
+}

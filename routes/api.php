@@ -146,3 +146,16 @@ Route::post('/reset-password', function (Request $request) {
         return response()->json(['message' => 'Error al restablecer la contraseña'], 500);
     }
 })->middleware('guest')->name('password.update');
+
+
+
+//
+// routes/web.php or routes/api.php
+
+Route::get('openapi.json', function () {
+    $path = public_path('openapi.json');
+
+    return response()->file($path, [
+        'Content-Type' => 'application/json',
+    ]);
+});
