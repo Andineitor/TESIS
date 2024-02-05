@@ -710,23 +710,6 @@
           "password"
         ]
       },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "res": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string"
-          }
-        }
-      },
       "UserUpdateRequest": {
         "type": "object",
         "properties": {
