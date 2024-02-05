@@ -21,9 +21,42 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegistrationRequest"
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string"
+                  },
+                  "apellido": {
+                    "type": "string"
+                  },
+                  "cedula": {
+                    "type": "string"
+                  },
+                  "direccion": {
+                    "type": "strig"
+                  },
+                  "celular": {
+                    "type": "string",
+                    "format": "text"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "contraseña": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "nombre",
+                  "apellido",
+                  "codeula",
+                  "celular",
+                  "email",
+                  "contraseña"
+                  
+                ]
               }
             }
           }
@@ -326,42 +359,20 @@
           "200": {
             "description": "Vehículos aceptados obtenidos con éxito",
             "content": {
-              "multipart/form-data": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "nombre": {
-                      "type": "string"
+                    "success": {
+                      "type": "boolean"
                     },
-                    "apellido": {
-                      "type": "string"
-                    },
-                    "cedula": {
-                      "type": "string"
-                    },
-                    "direccion": {
-                      "type": "strig"
-                    },
-                    "celular": {
-                      "type": "string",
-                      "format": "text"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "contraseña": {
-                      "type": "string"
+                    "vehiculos_aceptados": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Vehiculo"
+                      }
                     }
-                  },
-                  "required": [
-                    "nombre",
-                    "apellido",
-                    "codeula",
-                    "celular",
-                    "email",
-                    "contraseña"
-                    
-                  ]
+                  }
                 }
               }
             }
@@ -568,6 +579,7 @@
         }
       }
     },
+
     
   "components": {
     "schemas": {
