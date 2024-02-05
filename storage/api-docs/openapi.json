@@ -91,9 +91,23 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UserLoginRequest"
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "contraseña": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                 
+                  "email",
+                  "contraseña"
+                  
+                ]
               }
             }
           }
