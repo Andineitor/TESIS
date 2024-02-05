@@ -529,7 +529,7 @@
     },
     "/api/reset-password/{token}": {
       "get": {
-        "tags": ["Auth"],
+        "tags": ["Reset"],
         "summary": "Página de restablecimiento de contraseña",
         "description": "Página para restablecer la contraseña con el token proporcionado.",
         "parameters": [
