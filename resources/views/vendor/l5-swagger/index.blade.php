@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{config('l5-swagger.documentations.'.$documentation.'.api.title')}}</title>
-    <link rel="stylesheet" type="text/css" href="{{ l5_swagger_asset($documentation, 'swagger-ui.css') }}">
-    <link rel="icon" type="image/png" href="{{ l5_swagger_asset($documentation, 'favicon-32x32.png') }}" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="{{ l5_swagger_asset($documentation, 'favicon-16x16.png') }}" sizes="16x16"/>
+    <title>L5 Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="https://cargod-cb38f5c42af3.herokuapp.com/public/docs/asset/swagger-ui.css?v=3fb53292764c7c9a0ee0928832bfbe54">
+    <link rel="icon" type="image/png" href="https://cargod-cb38f5c42af3.herokuapp.com/public/docs/asset/favicon-32x32.png?v=40d4f2c38d1cd854ad463f16373cbcb6" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="https://cargod-cb38f5c42af3.herokuapp.com/public/docs/asset/favicon-16x16.png?v=f0ae831196d55d8f4115b6c5e8ec5384" sizes="16x16"/>
     <style>
     html
     {
@@ -30,21 +30,21 @@
 <body>
 <div id="swagger-ui"></div>
 
-<script src="{{ l5_swagger_asset($documentation, 'swagger-ui-bundle.js') }}"></script>
-<script src="{{ l5_swagger_asset($documentation, 'swagger-ui-standalone-preset.js') }}"></script>
+<script src="https://cargod-cb38f5c42af3.herokuapp.com/public/docs/asset/swagger-ui-bundle.js?v=6456bfd9afa0d3914d7eaa5a80506d20"></script>
+<script src="https://cargod-cb38f5c42af3.herokuapp.com/public/docs/asset/swagger-ui-standalone-preset.js?v=f2e8d34c39f7b7a59647d27eedbb5a46"></script>
 <script>
     window.onload = function() {
         // Build a system
         const ui = SwaggerUIBundle({
             dom_id: '#swagger-ui',
-            url: "{!! $urlToDocs !!}",
-            operationsSorter: {!! isset($operationsSorter) ? '"' . $operationsSorter . '"' : 'null' !!},
-            configUrl: {!! isset($configUrl) ? '"' . $configUrl . '"' : 'null' !!},
-            validatorUrl: {!! isset($validatorUrl) ? '"' . $validatorUrl . '"' : 'null' !!},
-            oauth2RedirectUrl: "{{ route('l5-swagger.'.$documentation.'.oauth2_callback', [], $useAbsolutePath) }}",
+            url: "https://cargod-cb38f5c42af3.herokuapp.com/public/docs/openapi.json",
+            operationsSorter: null,
+            configUrl: null,
+            validatorUrl: null,
+            oauth2RedirectUrl: "https://cargod-cb38f5c42af3.herokuapp.com/public/api/oauth2-callback",
 
             requestInterceptor: function(request) {
-                request.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
+                request.headers['X-CSRF-TOKEN'] = '';
                 return request;
             },
 
@@ -58,22 +58,14 @@
             ],
 
             layout: "StandaloneLayout",
-            docExpansion : "{!! config('l5-swagger.defaults.ui.display.doc_expansion', 'none') !!}",
+            docExpansion : "none",
             deepLinking: true,
-            filter: {!! config('l5-swagger.defaults.ui.display.filter') ? 'true' : 'false' !!},
-            persistAuthorization: "{!! config('l5-swagger.defaults.ui.authorization.persist_authorization') ? 'true' : 'false' !!}",
-
+            filter: true,
+            persistAuthorization: "false",
         })
 
         window.ui = ui
-
-        @if(in_array('oauth2', array_column(config('l5-swagger.defaults.securityDefinitions.securitySchemes'), 'type')))
-        ui.initOAuth({
-            usePkceWithAuthorizationCodeGrant: "{!! (bool)config('l5-swagger.defaults.ui.authorization.oauth2.use_pkce_with_authorization_code_grant') !!}"
-        })
-        @endif
     }
 </script>
 </body>
 </html>
-    
