@@ -547,6 +547,38 @@
       }
     },
 
+    "/api/reset-password/{token}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Página de restablecimiento de contraseña",
+        "description": "Página para restablecer la contraseña con el token proporcionado.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "Token de restablecimiento de contraseña",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Redirecciona a la página de restablecimiento de contraseña",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "example_token",
+                  "redirect_url": "https://cargod.netlify.app/reset-password/example_token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     
   "components": {
     "schemas": {
