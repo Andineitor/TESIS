@@ -479,8 +479,7 @@
           }
         }
       }
-    }
-  },
+    },
 
   "/api/reset-password/{token}": {
     "get": {
@@ -757,7 +756,7 @@
           "fecha_fin"
         ]
       },
-      
+
       "ResetPasswordRequest": {
         "type": "object",
         "properties": {
@@ -779,4 +778,5 @@
       }
     }
   }
+}
 }
