@@ -21,44 +21,32 @@
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "nombre": {
-                    "type": "string"
-                  },
-                  "apellido": {
-                    "type": "string"
-                  },
-                  "cedula": {
-                    "type": "string"
-                  },
-                  "direccion": {
-                    "type": "strig"
-                  },
-                  "celular": {
-                    "type": "string",
-                    "format": "text"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "contraseña": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "nombre",
-                  "apellido",
-                  "codeula",
-                  "celular",
-                  "email",
-                  "contraseña"
-                  
-                ]
+                "$ref": "#/components/schemas/UserRegistrationRequest"
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario registrado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
     },
     "/api/login": {
       "post": {
@@ -338,20 +326,42 @@
           "200": {
             "description": "Vehículos aceptados obtenidos con éxito",
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "success": {
-                      "type": "boolean"
+                    "nombre": {
+                      "type": "string"
                     },
-                    "vehiculos_aceptados": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Vehiculo"
-                      }
+                    "apellido": {
+                      "type": "string"
+                    },
+                    "cedula": {
+                      "type": "string"
+                    },
+                    "direccion": {
+                      "type": "strig"
+                    },
+                    "celular": {
+                      "type": "string",
+                      "format": "text"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "contraseña": {
+                      "type": "string"
                     }
-                  }
+                  },
+                  "required": [
+                    "nombre",
+                    "apellido",
+                    "codeula",
+                    "celular",
+                    "email",
+                    "contraseña"
+                    
+                  ]
                 }
               }
             }
@@ -558,39 +568,6 @@
         }
       }
     },
-
-    "/api/reset-password/{token}": {
-      "get": {
-        "tags": ["Reset"],
-        "summary": "Página de restablecimiento de contraseña",
-        "description": "Página para restablecer la contraseña con el token proporcionado.",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "path",
-            "required": true,
-            "description": "Token de restablecimiento de contraseña",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Redirecciona a la página de restablecimiento de contraseña",
-            "content": {
-              "application/json": {
-                "example": {
-                  "token": "example_token",
-                  "redirect_url": "https://cargod.netlify.app/reset-password/example_token"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-
     
   "components": {
     "schemas": {
@@ -809,7 +786,4 @@
     }
   }
 }
-}
-    }
-  }
 }
