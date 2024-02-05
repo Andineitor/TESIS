@@ -11,6 +11,87 @@
     }
   ],
   "paths": {
+    "/api/reset-password/{token}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Página de restablecimiento de contraseña",
+        "description": "Página para restablecer la contraseña con el token proporcionado.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "Token de restablecimiento de contraseña",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Redirecciona a la página de restablecimiento de contraseña",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "example_token",
+                  "redirect_url": "https://cargod.netlify.app/reset-password/example_token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reset-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Restablecer contraseña",
+        "description": "Restablece la contraseña del usuario.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contraseña restablecida correctamente",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Contraseña restablecida correctamente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Error de validación"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Error al restablecer la contraseña"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
     "/api/registro": {
       "post": {
         "tags": [
@@ -479,8 +560,10 @@
           }
         }
       }
-    }
-  },
+    },
+  
+
+  
   "components": {
     "schemas": {
       "User": {
@@ -676,5 +759,27 @@
         ]
       }
     }
-  }
+  },
+
+
+"ResetPasswordRequest": {
+  "type": "object",
+  "properties": {
+    "token": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "password": {
+      "type": "string"
+    },
+    "password_confirmation": {
+      "type": "string"
+    }
+  },
+  "required": ["token", "email", "password", "password_confirmation"]
 }
+}
+
