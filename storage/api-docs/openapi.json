@@ -21,32 +21,44 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegistrationRequest"
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string"
+                  },
+                  "apellido": {
+                    "type": "string"
+                  },
+                  "cedula": {
+                    "type": "string"
+                  },
+                  "direccion": {
+                    "type": "strig"
+                  },
+                  "celular": {
+                    "type": "string",
+                    "format": "text"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "contraseña": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "nombre",
+                  "apellido",
+                  "codeula",
+                  "celular",
+                  "email",
+                  "contraseña"
+                  
+                ]
               }
             }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Usuario registrado correctamente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error de validación"
-          },
-          "500": {
-            "description": "Error en el servidor"
-          }
-        }
-      }
     },
     "/api/login": {
       "post": {
@@ -797,4 +809,7 @@
     }
   }
 }
+}
+    }
+  }
 }
