@@ -483,7 +483,7 @@
 
   "/api/reset-password/{token}": {
     "get": {
-      "tags": ["Auth"],
+      "tags": ["reset"],
       "summary": "Página de restablecimiento de contraseña",
       "description": "Página para restablecer la contraseña con el token proporcionado.",
       "parameters": [
@@ -514,7 +514,7 @@
   },
   "/api/reset-password": {
     "post": {
-      "tags": ["Auth"],
+      "tags": ["Reset"],
       "summary": "Restablecer contraseña",
       "description": "Restablece la contraseña del usuario.",
       "requestBody": {
