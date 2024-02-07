@@ -35,7 +35,7 @@
                     "type": "string"
                   },
                   "direccion": {
-                    "type": "strig"
+                    "type": "string"
                   },
                   "celular": {
                     "type": "string",
@@ -51,11 +51,10 @@
                 "required": [
                   "nombre",
                   "apellido",
-                  "codeula",
+                  "cedula",
                   "celular",
                   "email",
                   "contraseña"
-                  
                 ]
               }
             }
@@ -103,10 +102,8 @@
                   }
                 },
                 "required": [
-                 
                   "email",
                   "contraseña"
-                  
                 ]
               }
             }
@@ -622,9 +619,8 @@
           }
         }
       }
-    },
-
-    
+    }
+  },
   "components": {
     "schemas": {
       "User": {
@@ -695,21 +691,6 @@
           "password"
         ]
       },
-      "UserLoginRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ]
-      },
       "UserUpdateRequest": {
         "type": "object",
         "properties": {
@@ -719,26 +700,40 @@
           "apellido": {
             "type": "string"
           },
-          "cedula": {
-            "type": "string"
-          },
           "direccion": {
             "type": "string"
           },
           "celular": {
             "type": "string"
-          },
-          "email": {
-            "type": "string"
           }
         },
         "required": [
-          "email"
+          "nombre",
+          "apellido",
+          "direccion",
+          "celular"
         ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer"
+          }
+        }
       },
       "Vehiculo": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer"
+          },
           "tipo_vehiculo": {
             "type": "string"
           },
@@ -780,49 +775,22 @@
           "id": {
             "type": "integer"
           },
-          "dias": {
-            "type": "integer"
-          },
-          "contrato": {
-            "type": "string"
-          },
-          "user_id": {
-            "type": "integer"
+          "fecha_inicio": {
+            "type": "string",
+            "format": "date-time"
           },
           "fecha_fin": {
             "type": "string",
             "format": "date-time"
+          },
+          "dias_contratados": {
+            "type": "integer"
+          },
+          "precio_total": {
+            "type": "number"
           }
-        },
-        "required": [
-          "id",
-          "dias",
-          "contrato",
-          "user_id",
-          "fecha_fin"
-        ]
-      },
-
-      "ResetPasswordRequest": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "password": {
-            "type": "string"
-          },
-          "password_confirmation": {
-            "type": "string"
-          }
-        },
-        "required": ["token", "email", "password", "password_confirmation"]
+        }
       }
     }
   }
-}
 }
