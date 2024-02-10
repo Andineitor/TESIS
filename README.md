@@ -10,7 +10,7 @@
 <br>
 
 
-<h1>PROYECTO</h1>
+<h3>PROYECTO</h3>
 
 El  proyecto tiene como finalidad permitir la gesti&oacuten de rentas de veh&iacuteculos por parte de los clientes de la empresa CarGod, mismo que mediante el desarrollo del backend se implemento la l&oacutegica necesaria para la gesti&oacuten autom&aacutetica de cada uno de los procesos como publicaciones, solicitudes y contratos  que ofrece como beneficios la aplicaci&oacuten web  
 <br>
@@ -29,7 +29,7 @@ Los perfiles de usuario que maneja el sistema son:
 
 
 
-<h2> > Funcionalidades para todos los Roles:</h2>
+<h3> > Funcionalidades para todos los Roles:</h3>
 
 <br>
 <ul>
@@ -42,7 +42,7 @@ Los perfiles de usuario que maneja el sistema son:
 
 <br>
 
-<h2> > Usuario Propietario</h2>
+<h3> > Usuario Propietario</h3>
 
 EL usuario Propietario tiene la posibilidad de:
 
@@ -55,7 +55,7 @@ EL usuario Propietario tiene la posibilidad de:
 <br>
 
 
-<h2> > Usuario Administrador</h2>
+<h3> > Usuario Administrador</h3>
 
 EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitudes echas por propietarios.
 
@@ -64,7 +64,7 @@ EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitude
 <br>
 
 
-<h2> > Usuario Cliente </h2>
+<h3> > Usuario Cliente </h3>
 
 
 El usuario Cliente tiene la posibilidad de:
@@ -78,7 +78,7 @@ El usuario Cliente tiene la posibilidad de:
 <br>
 <br>
 
-<h1> Manual de uso del backend</h1>
+<h3> Manual de uso del backend</h3>
 El acceso al manual se lo realiza dentro del siguiente enlace:
 
 
@@ -88,7 +88,7 @@ El acceso al manual se lo realiza dentro del siguiente enlace:
 
 ![image](https://res.cloudinary.com/db8fwxjlc/image/upload/v1707525333/readme/swagger_dmdmg2.png)
 
-<h1>Video explicativo</h1>
+<h3>Video explicativo</h3>
 En el siguiente video se exponen a detalle el uso y los métodos de cada uno de los Apis implementados en el proyecto.
 
 <br>
