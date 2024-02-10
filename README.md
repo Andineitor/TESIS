@@ -10,12 +10,12 @@
 <br>
 
 
-#PROYECTO
+<h1>PROYECTO</h1>
 
 El  proyecto tiene como finalidad permitir la gesti&oacuten de rentas de veh&iacuteculos por parte de los clientes de la empresa CarGod, mismo que mediante el desarrollo del backend se implemento la l&oacutegica necesaria para la gesti&oacuten autom&aacutetica de cada uno de los procesos como publicaciones, solicitudes y contratos  que ofrece como beneficios la aplicaci&oacuten web  
 <br>
 
-#Perfiles de usuario
+<h2>>Perfiles de usuario</h2>
 
 Los perfiles de usuario que maneja el sistema son: 
 
@@ -29,21 +29,20 @@ Los perfiles de usuario que maneja el sistema son:
 
 
 
-###Funcionalidades para todos los Roles:
+<h2>Funcionalidades para todos los Roles:</h2>
 
 <br>
 <ul>
-
     <li>Iniciar sesión.</li>
     <li>Cerrar sesión.</li>
-<li>Gestionar información personal.</li>
+    <li>Gestionar información personal.</li>
     <li>Recuperar contraseña./li>
 </ul>
 
 
 <br>
 
-###Usuario Propietario
+<h2>Usuario Propietario</h2>
 
 EL usuario Propietario tiene la posibilidad de:
 
@@ -56,7 +55,7 @@ EL usuario Propietario tiene la posibilidad de:
 <br>
 
 
-###Usuario Administrador
+<h2>>Usuario Administrador</h2>
 
 EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitudes echas por propietarios.
 
@@ -65,7 +64,7 @@ EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitude
 <br>
 
 
-##Usuario Cliente 
+<h2>>Usuario Cliente </h2>
 
 
 El usuario Cliente tiene la posibilidad de:
@@ -79,7 +78,7 @@ El usuario Cliente tiene la posibilidad de:
 <br>
 <br>
 
-# Manual de uso del backend
+<h1> Manual de uso del backend</h1>
 El acceso al manual se lo realiza dentro del siguiente enlace:
 
 
@@ -89,7 +88,7 @@ El acceso al manual se lo realiza dentro del siguiente enlace:
 
 ![image](https://res.cloudinary.com/db8fwxjlc/image/upload/v1707525333/readme/swagger_dmdmg2.png)
 
-#Video explicativo
+<h1>Video explicativo</h1>
 En el siguiente video se exponen a detalle el uso y los métodos de cada uno de los Apis implementados en el proyecto.
 
 <br>
@@ -101,5 +100,5 @@ En el siguiente video se exponen a detalle el uso y los métodos de cada uno de 
 <br>
 <br>
 <p align="right"><b>Elaborado por:</b> Andy Loor Centeno</p>
-<p align="right"><b>2022-2023</b></p>
+<p align="right"><b>2023-2024</b></p>
 <br>
