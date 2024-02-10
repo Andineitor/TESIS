@@ -29,20 +29,20 @@ Los perfiles de usuario que maneja el sistema son:
 
 
 
-<h2>Funcionalidades para todos los Roles:</h2>
+<h2> > Funcionalidades para todos los Roles:</h2>
 
 <br>
 <ul>
     <li>Iniciar sesión.</li>
     <li>Cerrar sesión.</li>
     <li>Gestionar información personal.</li>
-    <li>Recuperar contraseña./li>
+    <li>Recuperar contraseña.</li>
 </ul>
 
 
 <br>
 
-<h2>Usuario Propietario</h2>
+<h2> > Usuario Propietario</h2>
 
 EL usuario Propietario tiene la posibilidad de:
 
@@ -55,7 +55,7 @@ EL usuario Propietario tiene la posibilidad de:
 <br>
 
 
-<h2>>Usuario Administrador</h2>
+<h2> > Usuario Administrador</h2>
 
 EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitudes echas por propietarios.
 
@@ -64,7 +64,7 @@ EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitude
 <br>
 
 
-<h2>>Usuario Cliente </h2>
+<h2> > Usuario Cliente </h2>
 
 
 El usuario Cliente tiene la posibilidad de:
@@ -102,3 +102,4 @@ En el siguiente video se exponen a detalle el uso y los métodos de cada uno de 
 <p align="right"><b>Elaborado por:</b> Andy Loor Centeno</p>
 <p align="right"><b>2023-2024</b></p>
 <br>
+
