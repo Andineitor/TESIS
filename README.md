@@ -15,7 +15,7 @@
 El  proyecto tiene como finalidad permitir la gesti&oacuten de rentas de veh&iacuteculos por parte de los clientes de la empresa CarGod, mismo que mediante el desarrollo del backend se implemento la l&oacutegica necesaria para la gesti&oacuten autom&aacutetica de cada uno de los procesos como publicaciones, solicitudes y contratos  que ofrece como beneficios la aplicaci&oacuten web  
 <br>
 
-<h2>>Perfiles de usuario</h2>
+<h2>Perfiles de usuario</h2>
 
 Los perfiles de usuario que maneja el sistema son: 
 
