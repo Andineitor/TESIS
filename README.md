@@ -1,6 +1,6 @@
 <p align="center">
     <a>
-        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707530820/readme/log1_bfca6i.jpg" alt="Logo" width="400" height="200">
+        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707530820/readme/log1_bfca6i.jpg" alt="Logo" width="200" height="100">
     </a>
     <br>
  </p>
