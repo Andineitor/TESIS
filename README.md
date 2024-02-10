@@ -29,7 +29,7 @@ Los perfiles de usuario que maneja el sistema son:
 
 
 
-<h3> > Funcionalidades para todos los Roles:</h3>
+<h3> 🠚 Funcionalidades para todos los Roles:</h3>
 
 <br>
 <ul>
@@ -42,7 +42,7 @@ Los perfiles de usuario que maneja el sistema son:
 
 <br>
 
-<h3> > Usuario Propietario</h3>
+<h3> 🠚 Usuario Propietario</h3>
 
 EL usuario Propietario tiene la posibilidad de:
 
@@ -55,7 +55,7 @@ EL usuario Propietario tiene la posibilidad de:
 <br>
 
 
-<h3> > Usuario Administrador</h3>
+<h3> 🠚 Usuario Administrador</h3>
 
 EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitudes echas por propietarios.
 
@@ -64,7 +64,7 @@ EL usuario Administrador tiene la posibilidad de aceptar/rechazar las solicitude
 <br>
 
 
-<h3> > Usuario Cliente </h3>
+<h3> 🠚 Usuario Cliente </h3>
 
 
 El usuario Cliente tiene la posibilidad de:
@@ -78,21 +78,24 @@ El usuario Cliente tiene la posibilidad de:
 <br>
 <br>
 
-<h3> Manual de uso del backend</h3>
+<h2> Manual de uso del backend</h2>
 El acceso al manual se lo realiza dentro del siguiente enlace:
 
 
 <br>
-<p align="center"><a href="https://cargod-cb38f5c42af3.herokuapp.com/public/api/documentation" target="_blank"><strong>Manual backend -></strong></a></p>
+<p align="center"><a href="https://cargod-cb38f5c42af3.herokuapp.com/public/api/documentation" target="_blank"><br><strong>Manual backend 📤</strong></a></p>
 <br>
 
 ![image](https://res.cloudinary.com/db8fwxjlc/image/upload/v1707525333/readme/swagger_dmdmg2.png)
 
-<h3>Video explicativo</h3>
+<br>
+<br>
+<h2>Video explicativo</h2>
 En el siguiente video se exponen a detalle el uso y los métodos de cada uno de los Apis implementados en el proyecto.
 
 <br>
-<p align="center"><a href="https://www.youtube.com/watch?v=vYlE1vdvFXg&t=45s" target="_blank"><strong>Video explicativo -></strong></a></p>
+<br>
+<p align="center"><a href="https://www.youtube.com/watch?v=vYlE1vdvFXg&t=45s" target="_blank"><strong>Video explicativo 📤</strong></a></p>
 
 <br>
 <br>
