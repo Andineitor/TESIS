@@ -10,7 +10,7 @@
 <br>
 
 
-<h3>PROYECTO</h3>
+<h2>PROYECTO</h2>
 
 El  proyecto tiene como finalidad permitir la gesti&oacuten de rentas de veh&iacuteculos por parte de los clientes de la empresa CarGod, mismo que mediante el desarrollo del backend se implemento la l&oacutegica necesaria para la gesti&oacuten autom&aacutetica de cada uno de los procesos como publicaciones, solicitudes y contratos  que ofrece como beneficios la aplicaci&oacuten web  
 <br>
