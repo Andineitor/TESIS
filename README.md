@@ -22,7 +22,7 @@ Los perfiles de usuario que maneja el sistema son:
 <br>
 <p align="center">
     <a>
-        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707523763/readme/rol_jrvazh.png"  alt="Logo" width="800"  height="300" style="border-radius: 50%;">
+        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707523763/readme/rol_jrvazh.png"  alt="Logo" width="500"  height="100" style="border-radius: 50%">
     </a>
  </p>
 <br>
