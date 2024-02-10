@@ -1,6 +1,6 @@
 <p align="center">
     <a>
-        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707367548/readme/cargod_pcvhem.png" alt="Logo" width="200" height="200">
+        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707367548/readme/cargod_pcvhem.png"  alt="Logo" width="150" height="150" style="border-radius: 50%;">
     </a>
     <br>
  </p>
@@ -22,7 +22,7 @@ Los perfiles de usuario que maneja el sistema son:
 <br>
 <p align="center">
     <a>
-        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707523763/readme/rol_jrvazh.png" alt="Logo" width="800"  height="300">
+        <img src="https://res.cloudinary.com/db8fwxjlc/image/upload/v1707523763/readme/rol_jrvazh.png"  alt="Logo" width="800"  height="300" style="border-radius: 50%;">
     </a>
  </p>
 <br>
