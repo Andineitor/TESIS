@@ -12,7 +12,7 @@
 
 <h2>PROYECTO</h2>
 
-El  proyecto tiene como finalidad permitir la gesti&oacuten de rentas de vehículos por parte de los clientes de la empresa CarGod, mismo que mediante el desarrollo del backend se implemento la lógica necesaria para la gestión automática de cada uno de los procesos como publicaciones, solicitudes y contratos  que ofrece como beneficios la aplicación web  
+El  proyecto tiene como finalidad permitir la gestión de rentas de vehículos por parte de los clientes de la empresa CarGod, mismo que mediante el desarrollo del backend se implemento la lógica necesaria para la gestión automática de cada uno de los procesos como publicaciones, solicitudes y contratos  que ofrece como beneficios la aplicación web  
 <br>
 
 <h2>Perfiles de usuario</h2>
