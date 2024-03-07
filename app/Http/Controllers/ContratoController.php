@@ -19,7 +19,7 @@ class ContratoController extends Controller
                 'dias' => $diasContratados,
                 'contrato' => 'contratado',
                 'user_id' => $usuarioId,
-                'fecha_fin' => now()->addDays($diasContratados), // Fecha de finalización
+                //'fecha_fin' => now()->addDays($diasContratados), // Fecha de finalización
             ]);
 
             // Obtener el vehículo por su ID

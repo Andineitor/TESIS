@@ -13,7 +13,7 @@ class ResetPassword extends Notification
     use Queueable;
     public $token;
 
-    
+
 
     /**
      * Create a new notification instance.
@@ -36,14 +36,15 @@ class ResetPassword extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable, $url): MailMessage
+    protected function buildMailMessage($url)
     {
-        return (new MailMessage)
-            ->subject(Lang::get('Notificación de restablecimiento de contraseña'))
-            ->line(Lang::get('Estás recibiendo este correo electrónico porque hemos recibido una solicitud de restablecimiento de contraseña para tu cuenta.'))
-            ->action(Lang::get('Restablecer contraseña'), $url)
-            ->line(Lang::get('Este enlace de restablecimiento de contraseña caducará en :count minutos.', ['count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire')]))
-            ->line(Lang::get('Si no solicitaste un restablecimiento de contraseña, no es necesario que realices ninguna otra acción.'));
+        return(new MailMessage)
+            ->subject('Notificación de restablecimiento de contraseña')
+            ->line('Estás recibiendo este correo electrónico porque hemos recibido una solicitud de restablecimiento de contraseña para tu cuenta.')
+            ->action('Restablecer contraseña', $url)
+            ->line('Este enlace de restablecimiento de contraseña caducará en :count minutos.', ['count' => config('auth.passwords.' . config('auth.defaults.passwords') . '.expire')])
+            ->line('Si no solicitaste un restablecimiento de contraseña, no es necesario que realices ninguna otra acción.');
+
     }
 
     /**
