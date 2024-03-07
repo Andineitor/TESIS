@@ -32,7 +32,7 @@ class AuthController extends Controller
     
         [
             'cedula.unique' => 'Ya existe un usuario con esa cedula ',
-            // 'email.unique' => 'Ya existe un usuario con ese email ',
+            'email.unique' => 'Ya existe un usuario con ese email ',
         ]
     
 );
@@ -59,7 +59,6 @@ class AuthController extends Controller
 
         return response()->json(['user' => $user, 'message' => 'Usuario registrado correctamente'], 201);
     } catch (\Exception $e) {
-        Log::error('Error en el registro: ' . $e->getMessage());
         return response()->json(['res' => false, 'message' => 'Error en el registro', 'errors' => $e->getMessage()], 500);
     }
 }
