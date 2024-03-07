@@ -10,6 +10,10 @@
     {{ $slot }}
 
     {{-- Subcopy --}}
+
+
+
+    
     @isset($subcopy)
         <x-slot:subcopy>
             <x-mail::subcopy>
