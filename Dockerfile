@@ -24,6 +24,9 @@ WORKDIR /var/www/html
 # Copia el contenido del proyecto en el contenedor
 COPY . .
 
+# Copia el archivo .env.example como .env
+RUN cp .env.example .env
+
 # Instala las dependencias de Composer
 RUN composer install --optimize-autoloader --no-dev
 
@@ -36,11 +39,11 @@ COPY ./docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
 # Habilita el módulo de reescritura de Apache
 RUN a2enmod rewrite
 
-# Expone el puerto 80
-EXPOSE 80
-
 # Genera la clave de aplicación
 RUN php artisan key:generate
+
+# Expone el puerto 80
+EXPOSE 80
 
 # Comando por defecto para ejecutar la aplicación Laravel
 CMD ["apache2-foreground"]
